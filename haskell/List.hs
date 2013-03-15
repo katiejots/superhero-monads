@@ -15,14 +15,24 @@ foldRight :: (a -> b -> b) -> b -> List a -> b
 foldRight _ b Nil      = b
 foldRight f b (h :| t) = f h (foldRight f b t)
 
-maap :: (a -> b) -> List a -> List b
-maap f = foldRight (\x acc -> f x :| acc) Nil 
+mapList :: (a -> b) -> List a -> List b
+mapList f = foldRight (\x acc -> f x :| acc) Nil 
 
-fiilter :: (a -> Bool) -> List a -> List a
-fiilter f = foldRight (\x -> if f x then (x :|) else id) Nil 
+filterList :: (a -> Bool) -> List a -> List a
+filterList f = foldRight (\x -> if f x then (x :|) else id) Nil 
 
-append :: List a -> List a -> List a
-append = flip $ foldRight (:|) 
+appendList :: List a -> List a -> List a
+appendList = flip $ foldRight (:|) 
 
-flatMap :: (a -> List b) -> List a -> List b
-flatMap f = foldRight (append . f) Nil 
+flatMapList :: (a -> List b) -> List a -> List b
+flatMapList f = foldRight (appendList . f) Nil 
+
+applyList :: List (a -> b) -> List a -> List b
+applyList lf la = flatMapList (`mapList` la) lf
+
+liftList :: (a -> b -> c) -> List a -> List b -> List c
+liftList f = applyList . mapList f
+
+sequenceList :: [List a] -> List [a]
+sequenceList = foldr (liftList (:)) ([] :| Nil)
+

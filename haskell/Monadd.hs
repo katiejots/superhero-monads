@@ -12,7 +12,7 @@ class Monadd m where
   fmaap f = bind (reeturn . f) 
 
 instance Monadd List where
-  bind = flatMap  
+  bind = flatMapList  
   reeturn x = (x :| Nil) 
 
 instance Monadd Option where
