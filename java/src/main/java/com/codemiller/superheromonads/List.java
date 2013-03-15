@@ -53,7 +53,6 @@ public abstract class List<A> {
 
     public static final EmptyList EMPTY_LIST = new EmptyList();
 
-
     private static class EmptyList<A> extends List<A> {
         @Override
         public <B> List<B> map(Function<? super A, ? extends B> mapper) {

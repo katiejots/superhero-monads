@@ -2,8 +2,11 @@ package com.codemiller.superheromonads;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import static com.codemiller.superheromonads.List.emptyList;
 
 /**
  * @author Mario Fusco (see http://github.com/mariofusco/javaz)
@@ -11,7 +14,8 @@ import java.util.function.Predicate;
  */
 public abstract class Option<A> implements Iterable<A> {
 
-    private Option() { }
+    private Option() {
+    }
 
     public abstract <B> Option<B> map(Function<? super A, ? extends B> mapper);
 
@@ -23,6 +27,8 @@ public abstract class Option<A> implements Iterable<A> {
 
     public abstract boolean isDefined();
 
+    public abstract <B, C> Option<C> lift(BiFunction<? super A, ? super B, ? super C> function, Option<B> option);
+
     public static <A> Some<A> some(A value) {
         if (value == null) throw new NullPointerException();
         return new Some<A>(value);
@@ -33,7 +39,12 @@ public abstract class Option<A> implements Iterable<A> {
     }
 
     public static <A> Option<A> option(A value) {
-        if (value == null) return none(); else return some(value);
+        if (value == null) return none();
+        else return some(value);
+    }
+
+    public static <A> Option<List<A>> sequence(List<Option<A>> list) {
+        return list.foldRight((o, a) -> o.lift(List::cons, a), (Option<List<A>>) some((List<A>) emptyList()));
     }
 
     public static final None NONE = new None();
@@ -66,8 +77,23 @@ public abstract class Option<A> implements Iterable<A> {
         }
 
         @Override
+        public <B, C> Option<C> lift(BiFunction<? super A, ? super B, ? super C> function, Option<B> option) {
+            return NONE;
+        }
+
+        @Override
         public Iterator<A> iterator() {
             return (Iterator<A>) NONE_ITERATOR;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof None && obj == NONE;
+        }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
         }
 
         @Override
@@ -115,7 +141,8 @@ public abstract class Option<A> implements Iterable<A> {
 
         @Override
         public Option<A> filter(Predicate<? super A> predicate) {
-            if (predicate.test(value)) return this; else return None.NONE;
+            if (predicate.test(value)) return this;
+            else return None.NONE;
         }
 
         @Override
@@ -129,13 +156,35 @@ public abstract class Option<A> implements Iterable<A> {
         }
 
         @Override
+        public <B, C> Option<C> lift(BiFunction<? super A, ? super B, ? super C> function, Option<B> option) {
+            return this.flatMap(a -> (Option<C>) option.flatMap(b -> Option.some(function.apply(a, b))));
+        }
+
+        @Override
         public Iterator<A> iterator() {
             return new SomeIterator<A>(value);
         }
 
         @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Some some = (Some) o;
+
+            if (!value.equals(some.value)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return value.hashCode();
+        }
+
+        @Override
         public String toString() {
-            return "Some( " + value + ")";
+            return "Some(" + value + ")";
         }
 
         private static class SomeIterator<A> implements Iterator<A> {
