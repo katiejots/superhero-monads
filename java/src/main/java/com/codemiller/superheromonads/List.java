@@ -8,7 +8,8 @@ import java.util.function.Predicate;
  * @author Katie Miller (katie@codemiller.com)
  */
 public abstract class List<A> {
-    private List() { }
+    private List() {
+    }
 
     public abstract <B> List<B> map(Function<? super A, ? extends B> mapper);
 
@@ -36,7 +37,7 @@ public abstract class List<A> {
             return EMPTY_LIST;
         }
         List<A> list = EMPTY_LIST;
-        for (int i = values.length-1; i >= 0; i--) {
+        for (int i = values.length - 1; i >= 0; i--) {
             list = cons(values[i], list);
         }
         return list;
@@ -44,6 +45,10 @@ public abstract class List<A> {
 
     public static <A> List<A> cons(A value, List<A> list) {
         return new ItemList<A>(value, list);
+    }
+
+    public static <A> List<List<A>> sequence(List<List<A>> list) {
+        return list.foldRight((l, a) -> l.lift(List::cons, a), itemList((List<A>) EMPTY_LIST));
     }
 
     public static final EmptyList EMPTY_LIST = new EmptyList();
@@ -123,7 +128,7 @@ public abstract class List<A> {
 
         @Override
         public <B> List<B> flatMap(Function<? super A, ? extends List<B>> mapper) {
-            return foldRight((value, accumulator) -> (mapper.apply(value)).append(accumulator), (List<B>)EMPTY_LIST);
+            return foldRight((value, accumulator) -> (mapper.apply(value)).append(accumulator), (List<B>) EMPTY_LIST);
         }
 
         @Override
@@ -150,7 +155,7 @@ public abstract class List<A> {
 
         @Override
         public <B, C> List<C> lift(BiFunction<? super A, ? super B, ? super C> function, List<B> list) {
-            return this.flatMap(a -> (List<C>)list.flatMap(b -> List.itemList(function.apply(a, b))));
+            return this.flatMap(a -> (List<C>) list.flatMap(b -> List.itemList(function.apply(a, b))));
         }
 
         @Override
