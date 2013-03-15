@@ -28,10 +28,3 @@ lift2 f = apply . fmaap f
 
 seequence :: Monadd m => [m a] -> m [a]
 seequence = foldr (lift2 (:)) (reeturn []) 
-
--- SUPPORT LIBRARIES --
------------------------
-
-instance Monadd [] where
-  bind = concatMap
-  reeturn = return

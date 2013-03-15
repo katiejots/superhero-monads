@@ -22,6 +22,10 @@ public abstract class List<A> {
 
     public abstract List<A> append(List<A> list);
 
+    public abstract <B, C> List<C> lift(BiFunction<? super A, ? super B, ? super C> function, List<B> list);
+
+    public abstract <B> List<B> apply(List<Function<A, B>> functionList);
+
     public static <A> EmptyList<A> emptyList() {
         return EMPTY_LIST;
     }
@@ -74,6 +78,16 @@ public abstract class List<A> {
         @Override
         public List<A> append(List<A> list) {
             return list;
+        }
+
+        @Override
+        public <B, C> List<C> lift(BiFunction<? super A, ? super B, ? super C> function, List<B> list) {
+            return EMPTY_LIST;
+        }
+
+        @Override
+        public <B> List<B> apply(List<Function<A, B>> functionList) {
+            return EMPTY_LIST;
         }
 
         @Override
@@ -132,6 +146,16 @@ public abstract class List<A> {
         @Override
         public List<A> append(List<A> list) {
             return new ItemList<>(value, next.foldRight(List::cons, list));
+        }
+
+        @Override
+        public <B, C> List<C> lift(BiFunction<? super A, ? super B, ? super C> function, List<B> list) {
+            return this.flatMap(a -> (List<C>)list.flatMap(b -> List.itemList(function.apply(a, b))));
+        }
+
+        @Override
+        public <B> List<B> apply(List<Function<A, B>> functionList) {
+            return functionList.flatMap(this::map);
         }
 
         @Override
