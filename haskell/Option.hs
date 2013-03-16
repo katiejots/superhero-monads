@@ -9,12 +9,12 @@ mapOption :: (a -> b) -> Option a -> Option b
 mapOption _ None = None 
 mapOption f (Some a) = Some (f a)
 
-flatMapOption :: (a -> Option b) -> Option a -> Option b
-flatMapOption _ None = None 
-flatMapOption f (Some a) = f a
+flatMapOption :: Option a -> (a -> Option b) -> Option b
+flatMapOption None _ = None 
+flatMapOption (Some a) f = f a
 
 applyOption :: Option (a -> b) -> Option a -> Option b
-applyOption opf opa = flatMapOption (`mapOption` opa) opf 
+applyOption opf opa = flatMapOption opf (`mapOption` opa) 
 
 liftOption :: (a -> b -> c) -> Option a -> Option b -> Option c
 liftOption f = applyOption . mapOption f

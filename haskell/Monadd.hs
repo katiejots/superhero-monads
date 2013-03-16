@@ -6,22 +6,22 @@ import Option
 import List
 
 class Monadd m where
-  bind :: (a -> m b) -> m a -> m b
+  bind :: m a -> (a -> m b) -> m b
   reeturn :: a -> m a
   fmaap :: (a -> b) -> m a -> m b
-  fmaap f = bind (reeturn . f) 
+  fmaap f m = bind m (reeturn . f) 
 
 instance Monadd List where
   bind = flatMapList  
   reeturn x = (x :| Nil) 
 
 instance Monadd Option where
-  bind _ None = None 
-  bind f (Some a) = f a
+  bind None _ = None 
+  bind (Some a) f = f a
   reeturn = Some 
 
 apply :: Monadd m => m (a -> b) -> m a -> m b
-apply mf ma = bind (`fmaap` ma) mf
+apply mf ma = bind mf (`fmaap` ma)
 
 lift2 :: Monadd m => (a -> b -> c) -> m a -> m b -> m c
 lift2 f = apply . fmaap f   

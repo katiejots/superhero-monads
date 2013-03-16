@@ -2,6 +2,8 @@
 
 module List where
 
+import Option
+
 -- Custom list type
 data List t = Nil | t :| List t deriving Eq
 
@@ -24,11 +26,11 @@ filterList f = foldRight (\x -> if f x then (x :|) else id) Nil
 appendList :: List a -> List a -> List a
 appendList = flip $ foldRight (:|) 
 
-flatMapList :: (a -> List b) -> List a -> List b
-flatMapList f = foldRight (appendList . f) Nil 
+flatMapList :: List a -> (a -> List b) -> List b
+flatMapList l f = foldRight (appendList . f) Nil l 
 
 applyList :: List (a -> b) -> List a -> List b
-applyList lf la = flatMapList (`mapList` la) lf
+applyList lf la = flatMapList lf (`mapList` la)
 
 liftList :: (a -> b -> c) -> List a -> List b -> List c
 liftList f = applyList . mapList f
