@@ -2,8 +2,6 @@
 
 module List where
 
-import Option
-
 -- Custom list type
 data List t = Nil | t :| List t deriving Eq
 
@@ -35,6 +33,12 @@ applyList lf la = flatMapList lf (`mapList` la)
 liftList :: (a -> b -> c) -> List a -> List b -> List c
 liftList f = applyList . mapList f
 
-sequenceList :: [List a] -> List [a]
-sequenceList = foldr (liftList (:)) ([] :| Nil)
+sequenceList :: List (List a) -> List (List a) 
+sequenceList = foldRight (liftList (:|)) (Nil :| Nil)
+
+fromList :: List a -> [a]
+fromList = foldRight (:) []
+
+toList :: [a] -> List a
+toList = foldr (:|) Nil
 

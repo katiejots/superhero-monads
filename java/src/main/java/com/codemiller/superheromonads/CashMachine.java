@@ -7,7 +7,7 @@ import static com.codemiller.superheromonads.Option.*;
 /**
  * Example usages of flatMap and sequence for List and Option.
  *
- * @author kamiller@redhat.com (Katie Miller)
+ * @author Katie Miller (katie@codemiller.com)
  */
 public class CashMachine {
 
@@ -15,7 +15,7 @@ public class CashMachine {
         return option(map.get(key));
     }
 
-    public static Option<Integer> unitsLeft(Map<Integer, Integer> currencySupply, Integer value, Integer unitsWanted) {
+    public static Option<Integer> unitsLeft(Map<Double, Integer> currencySupply, Double value, Integer unitsWanted) {
         Option<Integer> none = none();
         return doLookup(currencySupply, value)
                 .flatMap(numUnits -> (unitsWanted < 0 || numUnits - unitsWanted < 0) ? none : some(numUnits - unitsWanted));

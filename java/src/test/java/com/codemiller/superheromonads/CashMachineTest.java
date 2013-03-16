@@ -4,19 +4,19 @@ import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 /**
- * @author kamiller@redhat.com (Katie Miller)
+ * @author Katie Miller (katie@codemiller.com)
  */
 public class CashMachineTest {
 
-    private ImmutableMap<Integer, Integer> currencySupply = ImmutableMap.of(20, 5, 50, 10, 100, 0);
+    private ImmutableMap<Double, Integer> currencySupply = ImmutableMap.of(20.0, 5, 50.0, 10, 100.0, 0);
 
     @Test
     public void testUnitsLeftAfterTakeThreeTwenties() {
-        // Given a currency supply with 5 of the currency amount 20
+        // Given a currency supply with 5 of the currency amount 20.0
         // And that we want three units
 
         // When unitsLeft is called
-        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 20, 3);
+        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 20.0, 3);
 
         // Then we find out this would leave Some(2) units left
         assert(result.equals(Option.some(2)));
@@ -24,11 +24,11 @@ public class CashMachineTest {
 
     @Test
     public void testUnitsLeftAfterTakeOneHundred() {
-        // Given a currency supply with 0 of the currency amount 100
+        // Given a currency supply with 0 of the currency amount 100.0
         // And that we want one unit
 
         // When unitsLeft is called
-        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 100, 1);
+        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 100.0, 1);
 
         // Then we find out this would result in None
         assert(result.equals(Option.none()));

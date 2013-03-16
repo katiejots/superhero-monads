@@ -2,6 +2,8 @@
 
 module Option where
 
+import List
+
 -- Custom Maybe type
 data Option a = Some a | None deriving (Eq, Show)
 
@@ -19,6 +21,6 @@ applyOption opf opa = flatMapOption opf (`mapOption` opa)
 liftOption :: (a -> b -> c) -> Option a -> Option b -> Option c
 liftOption f = applyOption . mapOption f
 
-sequenceOption :: [Option a] -> Option [a]
-sequenceOption = foldr (liftOption (:)) (Some [])
+sequenceOption :: List (Option a) -> Option (List a)
+sequenceOption = foldRight (liftOption (:|)) (Some Nil)
 
