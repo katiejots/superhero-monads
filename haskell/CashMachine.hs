@@ -48,4 +48,5 @@ findServiceableCombinations amount machineSupply = filterList isServiceable $ fi
               checkServiceability None = False
               checkServiceability (Some _) = True 
               machineCurrencies = toList $ [value | (value,units) <- (fromList machineSupply)]
- 
+
+combosFor100 = findServiceableCombinations 100.0 currency 
