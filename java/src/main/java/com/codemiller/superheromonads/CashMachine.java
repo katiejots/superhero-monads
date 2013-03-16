@@ -10,13 +10,13 @@ import static com.codemiller.superheromonads.Option.some;
  */
 public class CashMachine {
 
-    public static <K, V> Option<V> doLookup(List<Tuple<K, V>> tupleList, K key) {
+    public static <K, V> Option<V> lookup(List<Tuple<K, V>> tupleList, K key) {
         return tupleList.foldRight((tuple, acc) -> tuple.first().equals(key) ? Option.some(tuple.second()) : acc, (Option<V>) Option.none());
     }
 
     public static Option<Integer> unitsLeft(List<Tuple<Double, Integer>> currencySupply, Double value, Integer unitsWanted) {
         Option<Integer> none = none();
-        return doLookup(currencySupply, value)
+        return lookup(currencySupply, value)
                 .flatMap(numUnits -> (unitsWanted < 0 || numUnits - unitsWanted < 0) ? none : some(numUnits - unitsWanted));
     }
 

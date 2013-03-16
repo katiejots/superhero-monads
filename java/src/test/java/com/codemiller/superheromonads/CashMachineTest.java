@@ -93,7 +93,7 @@ public class CashMachineTest {
         // When findAllPossibleCombinationsForAmount is called
         List<List<Tuple<Double, Integer>>> result = CashMachine.findAllPossibleCombinationsForAmount(50.0, itemList(20.0, 50.0));
 
-        // Then all possible combinations that could be picked given that amount is the ceiling for any individual currency are returned
+        // Then all possible combinations that could be picked, given that amount is the ceiling for any individual currency, are returned
         assert(result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 0)),
                                       itemList(tuple(20.0, 0), tuple(50.0, 1)),
                                       itemList(tuple(20.0, 1), tuple(50.0, 0)),
