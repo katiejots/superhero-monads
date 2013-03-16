@@ -21,4 +21,4 @@ listNotes amounts currencies = amounts `flatMapList` (\amount -> currencies `fla
 take3twenties = unitsLeft currency 20 3
 take1hundred = unitsLeft currency 100 1
 
-machineNotes = listNotes (20 :| 50 :| 100 :| Nil) ("$AUD" :| "$NZ" :| Nil)
+machineNotes = listNotes (20 :| 50 :| 100 :| Nil) ("$AU" :| "$NZ" :| Nil)

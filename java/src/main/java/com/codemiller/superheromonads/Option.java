@@ -1,7 +1,5 @@
 package com.codemiller.superheromonads;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -12,7 +10,7 @@ import static com.codemiller.superheromonads.List.emptyList;
  * @author Mario Fusco (see http://github.com/mariofusco/javaz)
  * @author Katie Miller (katie@codemiller.com)
  */
-public abstract class Option<A> implements Iterable<A> {
+public abstract class Option<A> {
 
     private Option() {
     }
@@ -82,11 +80,6 @@ public abstract class Option<A> implements Iterable<A> {
         }
 
         @Override
-        public Iterator<A> iterator() {
-            return (Iterator<A>) NONE_ITERATOR;
-        }
-
-        @Override
         public boolean equals(Object obj) {
             return obj instanceof None && obj == NONE;
         }
@@ -99,25 +92,6 @@ public abstract class Option<A> implements Iterable<A> {
         @Override
         public String toString() {
             return "None";
-        }
-
-        private static final Iterator<?> NONE_ITERATOR = new NoneIterator();
-
-        private static class NoneIterator<A> implements Iterator<A> {
-            @Override
-            public boolean hasNext() {
-                return false;
-            }
-
-            @Override
-            public A next() {
-                throw new NoSuchElementException();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
         }
     }
 
@@ -161,11 +135,6 @@ public abstract class Option<A> implements Iterable<A> {
         }
 
         @Override
-        public Iterator<A> iterator() {
-            return new SomeIterator<A>(value);
-        }
-
-        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -185,33 +154,6 @@ public abstract class Option<A> implements Iterable<A> {
         @Override
         public String toString() {
             return "Some(" + value + ")";
-        }
-
-        private static class SomeIterator<A> implements Iterator<A> {
-
-            private final A value;
-            private boolean hasNext = true;
-
-            private SomeIterator(A value) {
-                this.value = value;
-            }
-
-            @Override
-            public boolean hasNext() {
-                return hasNext;
-            }
-
-            @Override
-            public A next() {
-                if (!hasNext) throw new NoSuchElementException();
-                hasNext = false;
-                return value;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
         }
     }
 }
