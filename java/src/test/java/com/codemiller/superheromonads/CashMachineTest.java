@@ -83,22 +83,47 @@ public class CashMachineTest {
         List<Tuple<Double, Integer>> result = CashMachine.createValueUnitTuplesForValue(100.0, 50.0);
 
         // Then all the possible pairings are returned
-        assert(result.equals(List.itemList(tuple(50.0,0), tuple(50.0,1), tuple(50.0, 2))));
+        assert (result.equals(List.itemList(tuple(50.0, 0), tuple(50.0, 1), tuple(50.0, 2))));
     }
 
     @Test
     public void testFindAllPossibleCombosForAmount() {
         // Given an amount and a list of currency values
 
-        // When findAllPossibleCombinationsForAmount is called
-        List<List<Tuple<Double, Integer>>> result = CashMachine.findAllPossibleCombinationsForAmount(50.0, itemList(20.0, 50.0));
+        // When findCombinationSearchSpaceForAmount is called
+        List<List<Tuple<Double, Integer>>> result = CashMachine.findCombinationSearchSpaceForAmount(50.0, itemList(20.0, 50.0));
 
         // Then all possible combinations that could be picked, given that amount is the ceiling for any individual currency, are returned
-        assert(result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 0)),
-                                      itemList(tuple(20.0, 0), tuple(50.0, 1)),
-                                      itemList(tuple(20.0, 1), tuple(50.0, 0)),
-                                      itemList(tuple(20.0, 1), tuple(50.0, 1)),
-                                      itemList(tuple(20.0, 2), tuple(50.0, 0)),
-                                      itemList(tuple(20.0, 2), tuple(50.0, 1)))));
+        assert (result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 0)),
+                itemList(tuple(20.0, 0), tuple(50.0, 1)),
+                itemList(tuple(20.0, 1), tuple(50.0, 0)),
+                itemList(tuple(20.0, 1), tuple(50.0, 1)),
+                itemList(tuple(20.0, 2), tuple(50.0, 0)),
+                itemList(tuple(20.0, 2), tuple(50.0, 1)))));
+    }
+
+    @Test
+    public void testFindCombosForAmount() {
+        // Given an amount and a list of currency values
+
+        // When findCombinationsForAmount is called
+        List<List<Tuple<Double, Integer>>> result = CashMachine.findCombinationsForAmount(100.0, itemList(20.0, 50.0, 100.0));
+
+        // Then all combinations that equal that amount are returned
+        assert (result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 0), tuple(100.0, 1)),
+                itemList(tuple(20.0, 0), tuple(50.0, 2), tuple(100.0, 0)),
+                itemList(tuple(20.0, 5), tuple(50.0, 0), tuple(100.0, 0)))));
+    }
+
+    @Test
+    public void testFindServiceableCombos() {
+        // Given an amount and a machine currency supply
+
+        // When findServiceableCombinations is called
+        List<List<Tuple<Double, Integer>>> result = CashMachine.findServiceableCombinations(100.0, currencySupply);
+
+        // Then all combinations that are serviceable for that amount are returned
+        assert (result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 2), tuple(100.0, 0)),
+                itemList(tuple(20.0, 5), tuple(50.0, 0), tuple(100.0, 0)))));
     }
 }
