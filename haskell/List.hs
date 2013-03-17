@@ -24,12 +24,6 @@ flatMapList l f = foldRight (appendList . f) Nil l
 returnList :: a -> List a
 returnList a = a :| Nil
 
-filterList :: (a -> Bool) -> List a -> List a
-filterList f = foldRight (\x -> if f x then (x :|) else id) Nil 
-
-appendList :: List a -> List a -> List a
-appendList = flip $ foldRight (:|) 
-
 applyList :: List (a -> b) -> List a -> List b
 applyList lf la = flatMapList lf (`mapList` la)
 
@@ -37,7 +31,13 @@ liftList :: (a -> b -> c) -> List a -> List b -> List c
 liftList f = applyList . mapList f
 
 sequenceList :: List (List a) -> List (List a) 
-sequenceList = foldRight (liftList (:|)) (Nil :| Nil)
+sequenceList = foldRight (liftList (:|)) (returnList Nil)
+
+filterList :: (a -> Bool) -> List a -> List a
+filterList f = foldRight (\x -> if f x then (x :|) else id) Nil
+
+appendList :: List a -> List a -> List a
+appendList = flip $ foldRight (:|) 
 
 fromList :: List a -> [a]
 fromList = foldRight (:) []

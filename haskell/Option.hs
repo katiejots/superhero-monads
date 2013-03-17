@@ -25,5 +25,5 @@ liftOption :: (a -> b -> c) -> Option a -> Option b -> Option c
 liftOption f = applyOption . mapOption f
 
 sequenceOption :: List (Option a) -> Option (List a)
-sequenceOption = foldRight (liftOption (:|)) (Some Nil)
+sequenceOption = foldRight (liftOption (:|)) (returnOption Nil)
 
