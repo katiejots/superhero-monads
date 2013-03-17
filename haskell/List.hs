@@ -18,14 +18,17 @@ foldRight f b (h :| t) = f h (foldRight f b t)
 mapList :: (a -> b) -> List a -> List b
 mapList f = foldRight (\x acc -> f x :| acc) Nil 
 
+flatMapList :: List a -> (a -> List b) -> List b 
+flatMapList l f = foldRight (appendList . f) Nil l
+
+returnList :: a -> List a
+returnList a = a :| Nil
+
 filterList :: (a -> Bool) -> List a -> List a
 filterList f = foldRight (\x -> if f x then (x :|) else id) Nil 
 
 appendList :: List a -> List a -> List a
 appendList = flip $ foldRight (:|) 
-
-flatMapList :: List a -> (a -> List b) -> List b
-flatMapList l f = foldRight (appendList . f) Nil l 
 
 applyList :: List (a -> b) -> List a -> List b
 applyList lf la = flatMapList lf (`mapList` la)

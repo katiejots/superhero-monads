@@ -13,12 +13,11 @@ class Monadd m where
 
 instance Monadd List where
   bind = flatMapList  
-  reeturn x = (x :| Nil) 
+  reeturn = returnList 
 
 instance Monadd Option where
-  bind None _ = None 
-  bind (Some a) f = f a
-  reeturn = Some 
+  bind = flatMapOption 
+  reeturn = returnOption 
 
 apply :: Monadd m => m (a -> b) -> m a -> m b
 apply mf ma = bind mf (`fmaap` ma)

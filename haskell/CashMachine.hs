@@ -1,52 +1,66 @@
+-- Module giving example uses of Option and List types
+
 module CashMachine where
 
 import Option
 import List
-import Monadd
 
-currency = (20.0, 5) :| (50.0, 10) :| (100.0, 0) :| Nil
+-- Preconstructed list of currency supply, for convenience
+currencySupply = (20.0, 5) :| (50.0, 10) :| (100.0, 0) :| Nil
 
+-- Method to find the value Option 'b' for a key 'a' in a list of tuples
+-- We could use the function 'lookup' for this if we were using the standard list type (or we could use a map)
 listLookup :: Eq a => a -> List (a, b) -> Option b
 listLookup key Nil = None
 listLookup key ((x,y) :| xs)
     | key == x = Some y
     | otherwise = listLookup key xs
 
+-- Function returning the number of units that would be left of a currency value if we took away a given number of units
 unitsLeft :: List (Float,Integer) -> Float -> Integer -> Option Integer
-unitsLeft xs val num = (listLookup val xs) `flatMapOption` (\x -> if num < 0 || x - num < 0 then None else Some (x - num))
+unitsLeft supply val num = (listLookup val supply) `flatMapOption` (\u -> if num < 0 || u - num < 0 then None else returnOption (u - num))
 
+-- Function to list all the notes our machine can supply, given its currency values and currencies
 listNotes :: List Float -> List String -> List String
-listNotes amounts currencies = amounts `flatMapList` (\amount -> currencies `flatMapList` (\currency -> reeturn (currency ++ (show amount))))
+listNotes amts curs = amts `flatMapList` (\amt -> curs `flatMapList` (\cur -> returnList (cur ++ (show amt))))
 
-take3twenties = unitsLeft currency 20 3
-take1hundred = unitsLeft currency 100 1
+-- Example uses of unitsLeft
+take3twenties = unitsLeft currencySupply 20 3
+take1hundred = unitsLeft currencySupply 100 1
 
+-- Example use of listNotes
 machineNotes = listNotes (20 :| 50 :| 100 :| Nil) ("$AU" :| "$NZ" :| Nil)
 
-checkAmountServiceable :: List (Float,Integer) -> List (Float,Integer) -> Option (List Integer)
-checkAmountServiceable currency combination = sequenceOption (foldRight (\(val,num) acc -> (unitsLeft currency val num) :| acc) Nil combination)  
+-- Example use of sequenceOption; function giving a list of the units left for each currency value used  
+checkComboServiceable :: List (Float,Integer) -> List (Float,Integer) -> Option (List Integer)
+checkComboServiceable cur combo = sequenceOption (foldRight (\(val,num) acc -> (unitsLeft cur val num) :| acc) Nil combo)  
 
-supplyAfter70Combo = checkAmountServiceable currency ((20.0,1) :| (50.0,1) :| Nil) 
-supplyAfter170Combo = checkAmountServiceable currency ((20.0,6) :| (50.0,1) :| Nil) 
-supplyAfter170Combo2 = checkAmountServiceable currency ((20.0,1) :| (50.0,3) :| Nil)
+-- Example uses of checkComboServiceable
+supplyAfter70Combo = checkComboServiceable currencySupply ((20.0,1) :| (50.0,1) :| Nil) 
+supplyAfter170Combo = checkComboServiceable currencySupply ((20.0,6) :| (50.0,1) :| Nil) 
+supplyAfter170Combo2 = checkComboServiceable currencySupply ((20.0,1) :| (50.0,3) :| Nil)
 
-createValueUnitPairsForCurrencyValue :: Float -> Float -> List (Float,Integer)
-createValueUnitPairsForCurrencyValue amount currencyValue = toList $ zip (repeat currencyValue) [0..floor(amount/currencyValue)] 
+-- Helper function to create all the value/unit tuples that could possibly appear in a valid combination to supply an amount
+createValueUnitPairs :: Float -> Float -> List (Float,Integer)
+createValueUnitPairs amt val = toList $ zip (repeat val) [0..floor(amt/val)] 
 
-findCombinationsForAmount :: Float -> List (Float) -> List (List (Float,Integer)) 
-findCombinationsForAmount _ Nil = Nil 
-findCombinationsForAmount 0.0 _ = Nil 
-findCombinationsForAmount amount currencyValues = filterList valueEqualsAmount combinations
-        where combinations = sequenceList $ foldRight (\val acc -> (createValueUnitPairsForCurrencyValue amount val) :| acc) Nil currencyValues 
-              valueEqualsAmount xs = amount == foldRight(\(val,num) acc -> val * (fromInteger num) + acc) 0.0 xs
+-- Example use of sequenceList; calculating all the possible currency combinations to supply a given amount  
+findCombos :: Float -> List (Float) -> List (List (Float,Integer)) 
+findCombos 0.0 _ = Nil 
+findCombos amt vals = filterList valEqAmount combos
+        where combos = sequenceList $ foldRight (\val acc -> (createValueUnitPairs amt val) :| acc) Nil vals 
+              valEqAmount combo = amt == foldRight(\(val,num) acc -> val * (fromInteger num) + acc) 0.0 combo 
 
-combinations amount = sequenceList $ foldRight (\val acc -> (createValueUnitPairsForCurrencyValue amount val) :| acc) Nil (20.0 :| 50.0 :| 100.0 :| Nil) 
+-- Function showing the result of just the combinations calculation, before the results are filtered based on value
+combinations amt = sequenceList $ foldRight (\val acc -> (createValueUnitPairs amt val) :| acc) Nil (20.0 :| 50.0 :| 100.0 :| Nil) 
 
-findServiceableCombinations :: Float -> List (Float,Integer) -> List (List (Float,Integer)) 
-findServiceableCombinations amount machineSupply = filterList isServiceable $ findCombinationsForAmount amount machineCurrencies
-        where isServiceable combo = checkServiceability (checkAmountServiceable machineSupply combo)
-              checkServiceability None = False
-              checkServiceability (Some _) = True 
-              machineCurrencies = toList $ [value | (value,units) <- (fromList machineSupply)]
+-- Function showing how we could bring it all together, making use of flatMapOption, sequenceList and sequenceOption to find serviceable combinations  
+findUsableCombos :: Float -> List (Float,Integer) -> List (List (Float,Integer)) 
+findUsableCombos amt supply = filterList isUsable $ findCombos amt curs
+        where isUsable combo = checkUsable (checkComboServiceable supply combo)
+              checkUsable None = False
+              checkUsable (Some _) = True 
+              curs = toList $ [val | (val,num) <- (fromList supply)]
 
-combosFor100 = findServiceableCombinations 100.0 currency 
+-- Example use of findUsableCombos
+combosFor100 = findUsableCombos 100.0 currencySupply 

@@ -15,6 +15,9 @@ flatMapOption :: Option a -> (a -> Option b) -> Option b
 flatMapOption None _ = None 
 flatMapOption (Some a) f = f a
 
+returnOption :: a -> Option a
+returnOption a = Some a
+
 applyOption :: Option (a -> b) -> Option a -> Option b
 applyOption opf opa = flatMapOption opf (`mapOption` opa) 
 
