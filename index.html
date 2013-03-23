@@ -115,7 +115,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 
 <span class="fragment">public static List&lt;Integer&gt; map(List&lt;Integer&gt; list, Function&lt;Integer,Integer&gt;
   func) {
-    List&lt;Integer&gt; result = new ArrayList&lt;Integer&gt;();
+    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
     for (Integer num : list) {
         result.add(func.apply(num));
     }
@@ -125,7 +125,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 <span class="fragment">System.out.println(map(Arrays.asList(1, 2, 3), i -> i + 1));
 // [2, 3, 4]</span>
 
-<span class="fragment">System.out.println(map(Arrays.asList(-1, 2, -3), Math::abs);
+<span class="fragment">System.out.println(map(Arrays.asList(-1, 2, -3), Math::abs));
 // [1, 2, 3]</span>
 
 					</code></pre>
