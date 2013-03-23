@@ -1,4 +1,6 @@
 -- Code based on exercises by Tony Morris (see http://github.com/tonymorris/course)
+-- Custom Monad type class to demonstrate implementation details
+-- Functions are named oddly in order not to clash with the built-in versions
 
 module Monadd where
 
