@@ -12,7 +12,15 @@ bindMaybe :: Maybe a -> (a -> Maybe b) -> Maybe b
 Nothing `bindMaybe` _ = Nothing
 Just a `bindMaybe` f = f a
 
+mapMaybe :: (a -> b) -> Maybe a -> Maybe b
+mapMaybe _ Nothing = Nothing
+mapMaybe f (Just a) = Just (f a)
 
+liftMaybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+liftMaybe f ma mb = (mapMaybe f ma) `bindMaybe` (`mapMaybe` mb)
+
+sequenceMaybe :: [Maybe a] -> Maybe [a]
+sequenceMaybe ls = foldr (l acc -> liftMaybe (:) l acc) (returnMaybe []) ls
 
 returnMaybeExample = returnMaybe 7
 

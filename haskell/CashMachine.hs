@@ -15,7 +15,8 @@ listNotes amts curs = amts >>= (\amt -> curs >>= (\cur -> return (cur ++ (show a
 
 -- Example uses of unitsLeft
 take3twenties = unitsLeft currencySupply 20 3
-take1hundred = unitsLeft currencySupply 100 1
+take10twenties = unitsLeft currencySupply 20 10
+take1seventy = unitsLeft currencySupply 70 1
 
 -- Function to get machine currencies
 machineCurrencies :: [(Int,Int)] -> [Int]
@@ -46,6 +47,7 @@ findCombos amt vals = filter valEqAmount combos
 
 -- Function showing the result of just the combinations calculation, before the results are filtered based on value
 combinations amt = sequence $ foldr (\val acc -> (createValueUnitPairs amt val) : acc) [] (machineCurrencies currencySupply) 
+combinations70 = combinations 70
 
 -- Function showing how we could bring it all together, making use of bind (>>=) and sequence with list and Maybe to find serviceable combinations  
 findUsableCombos :: Int -> [(Int,Int)] -> [[(Int,Int)]]
