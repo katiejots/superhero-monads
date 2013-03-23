@@ -212,10 +212,12 @@ public interface BiFunction&lt;T, U, R&gt; {
 
 <span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe (x+1))
 -- Just 8</span>
+
 <span class="fragment">Nothing `bindMaybe` (\x -> returnMaybe (x+1))
 -- Nothing</span>
-<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) `bindMaybe` 
-  (\x -> returnMaybe (x*5))
+
+<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) `bindMaybe` (\x -> 
+  returnMaybe (x*5))
 -- Just 40</span>
 
 </code></pre>
