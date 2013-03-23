@@ -199,7 +199,6 @@ public interface BiFunction&lt;T, U, R&gt; {
 					<span>Context of possible value absence</span>
 <pre><code>
 -- data Maybe a = Just a | Nothing 
---   deriving (Eq, Ord)
 
 <span class="fragment">returnMaybe :: a -> Maybe a</span>
 <span class="fragment">returnMaybe a = Just a</span>
@@ -210,10 +209,10 @@ public interface BiFunction&lt;T, U, R&gt; {
 <span class="fragment">Nothing `bindMaybe` _ = Nothing</span>
 <span class="fragment">Just a `bindMaybe` f = f a</span>
 
-<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe x+1) = Just 8</span>
-<span class="fragment">Nothing `bindMaybe` (\x -> returnMaybe x+1) = Nothing</span>
-<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe x+1) `bindMaybe` 
-  (\x -> returnMaybe x*5) = Just 40</span>
+<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) = Just 8</span>
+<span class="fragment">Nothing `bindMaybe` (\x -> returnMaybe (x+1)) = Nothing</span>
+<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) `bindMaybe` 
+  (\x -> returnMaybe (x*5)) = Just 40</span>
 
 </code></pre>
 				</section>
@@ -293,7 +292,7 @@ public static final class Some&lt;A&gt; extends Option&lt;A&gt; {
 					</p>
 					<span>Context of non-determinism</span>
 <pre><code>
--- picture constructor something like: data [a] = [] | a:[a]
+-- picture a constructor something like: data [a] = [] | a:[a]
 
 <span class="fragment">returnList :: a -> [a]</span>
 <span class="fragment">returnList a = [a]</span>
