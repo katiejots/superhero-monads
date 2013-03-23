@@ -38,8 +38,653 @@
 
 				<section>
 					<h1>Monads to the Rescue</h1>
-					<h3>Katie Miller (<a href="http://twitter.com/codemiller">@codemiller</a>)<br>Developer at <a href="http://redhat.com">Red Hat</a></h3>
+					<img src="images/lambdadude.png" style="background: none; border: none; box-shadow: none; margin-top: 0px;"/>
+					<h3>Katie Miller (<a href="http://twitter.com/codemiller" target="_blank">@codemiller</a>)<br>Developer at <a href="http://redhat.com" target="_blank">Red Hat</a></h3>
 				</section>
+				<section>
+					<span><strong>Superhero (ˈsuːpəˌhɪərəʊ):</strong> Any of various <span class="fragment highlight-red" data-fragment-index="1">comic-strip</span> characters with <span class="fragment highlight-red" data-fragment-index="7">superhuman abilities or magical powers</span>, wearing a <span class="fragment highlight-red" data-fragment-index="3">distinctive costume</span>, and <span class="fragment highlight-red" data-fragment-index="5">fighting against evil</span> <br>- <a href="http://dictionary.reference.com/browse/superhero" target="_blank">World English Dictionary</a></span>
+					<p>&nbsp;</p>
+					<ul>
+						<li class="fragment" data-fragment-index="2">Found in particular setting: <em>Where might you find monads?</em></li>
+						<li class="fragment" data-fragment-index="4">Distinctive costume: <em>What do monads look like?</em></li>
+						<li class="fragment" data-fragment-index="6">Force for good: <em>What are monads good for?</em></li>
+						<li class="fragment" data-fragment-index="8">Special, unexpected abilities: <em>What special or unexpected abilities do monads have?</em></li>
+					</ul>
+				</section>
+				<section>
+				<section>
+					<div style="position: fixed; left: 5%"><img src="images/context-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; top: 50%; left: 5%"><img src="images/purpose.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<img src="images/monadman.png" style="background: none; border: none; box-shadow: none;"/>
+					<div style="position: fixed; left: 69%; top: 2%"><img src="images/costume.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; left: 70%; top: 49%"><img src="images/powers.png" style="background: none; border: none; box-shadow: none;"/></div>
+            			</section>
+				<section>
+					<h3>Functional Programming Paradigm</h3>
+					</p>
+					<ul>
+						<li class="fragment">"[I]ts fundamental operation is the application of functions to arguments." - John&nbsp;Hughes</li>
+						<li class="fragment">Pure functions don't have side-effects; they are referentially transparent</li>
+						<li class="fragment">Functions are first-class; higher-order functions take other functions as arguments or return a function as a result</li>
+					</ul>
+				</section>
+				<section>
+					<h3>FP Features</h3>
+					</p>
+					<ul>
+						<li>Immutable data</li>
+						<li>Lazy evaluation</li>
+						<li>Lambda expressions</li>
+						<li>Closures</li>
+						<li>Pattern matching</li>
+						<li>Alternatives to loops</li>
+						<li>Partial application/currying</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Haskell Example</h3>
+					</p>
+					<pre><code>
+myList = ['a'] --'a':[]
+myFunc :: (Num a, Enum a) => [b] -> Int -> [(a,b)]
+myFunc (x:xs) n = foldr (\i acc -> (i,x):acc) [] (take n [1..])
+
+<span class="fragment">myFunc myList 3 =
+[1,2,3] (3,'a'):[]</span>
+<span class="fragment">[1,2]   (2,'a'):[(3,'a')]</span>
+<span class="fragment">[1]     (1,'a'):[(2,'a'),(3,'a')]</span>
+<span class="fragment">[]      [(1,'a'),(2,'a'),(3,'a')]</span>
+
+<span class="fragment">myFunc myList = ?</span>	
+
+<span class="fragment">:t myFunc myList
+myFunc myList :: (Num a, Enum a) => Int -> [(a, Char)]</span>
+					</code></pre>
+				</section>
+				<section>
+					<h3>Java 8 Lambdas</h3>
+					</p>
+					<pre><code>
+public interface Function&lt;T, R&gt; {
+    public R apply(T t);
+}
+
+public interface BiFunction&lt;T, U, R&gt; {
+    R apply(T t, U u);
+}
+
+<span class="fragment">public static List&lt;Integer&gt; map(List&lt;Integer&gt; list, Function&lt;Integer,Integer&gt;
+  func) {
+    List&lt;Integer&gt; result = new ArrayList&lt;Integer&gt;();
+    for (Integer num : list) {
+        result.add(func.apply(num));
+    }
+    return result;
+}</span>
+
+<span class="fragment">System.out.println(map(Arrays.asList(1, 2, 3), i -> i + 1));
+// [2, 3, 4]</span>
+
+<span class="fragment">System.out.println(map(Arrays.asList(-1, 2, -3), Math::abs);
+// [1, 2, 3]</span>
+
+					</code></pre>
+				</section>
+				<section>
+					<h3>FP Benefits</h3>
+					</p>
+					<ul>
+						<li>Ability to reason about program behaviour; can use equational reasoning</li>
+						<li>Higher-order functions and lazy evaluation facilitate more modular programs; code&nbsp;reuse</li>
+						<li>Removing side-effects aids concurrent programming</li>
+						<li>Programs often more succinct</li>
+						<li>Automated test generation with tools such as QuickCheck</li>
+					</ul>
+				</section>
+				</section>
+				<section>
+				<section>
+					<div style="position: fixed; left: 5%"><img src="images/context.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; top: 50%; left: 5%"><img src="images/purpose.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<img src="images/monadman.png" style="background: none; border: none; box-shadow: none;"/>
+					<div style="position: fixed; left: 69%; top: 2%"><img src="images/costume-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; left: 70%; top: 49%"><img src="images/powers.png" style="background: none; border: none; box-shadow: none;"/></div>
+            			</section>
+				<section>
+					<h3>The Monad Costume</h3>
+					<p>
+					A monad is a structure that puts values in a computational context and generally implements two&nbsp;functions:
+					</p>
+					<ul>
+						<li class="fragment">Return: <strong>a &rarr; Monad a</strong><br>(also known as Unit/Pure)</li>						
+						<li class="fragment">Bind: <strong>(Monad a, (a &rarr; Monad b)) &rarr; Monad&nbsp;b</strong><br>(also known as FlatMap/SelectMany)</li>		
+					</ul>
+					</p>
+					<span class="fragment"><img src="images/letter_s.png" style="background: none; border: none; box-shadow: none;"/>
+					<span class="fragment"><img src="images/right-arrow.svg" style="background: none; border: none; box-shadow: none; padding-bottom: 35px;"/><img src="images/super_s.png" style="background: none; border: none; box-shadow: none;"/><br>
+					<span class="fragment"><img src="images/super_s.png" style="background: none; border: none; box-shadow: none;"/></span>
+					<span class="fragment"><img src="images/right-arrow.svg" style="background: none; border: none; box-shadow: none; padding-bottom: 35px; padding-right: 15px"/><img src="images/letter_s.png" style="background: none; border: none; box-shadow: none;"/></span>
+					<span class="fragment"><img src="images/right-arrow.svg" style="background: none; border: none; box-shadow: none; padding-bottom: 35px; padding-right: 15px; padding-left: 15px""/><img src="images/letter_t.png" style="background: none; border: none; box-shadow: none;"/></span>
+					<span class="fragment"><img src="images/right-arrow.svg" style="background: none; border: none; box-shadow: none; padding-bottom: 35px; padding-left: 15px;"/><img src="images/super_t.png" style="background: none; border: none; box-shadow: none;"/>
+				</section>
+				<section>
+					<span>"Any time you start with something which you pull apart and use to compute a new something of that same type, you have a <strong>monad</strong>. It's really as simple as that. If it sounds like I'm describing almost all of your code, then good, that means you're starting to catch on." -&nbsp;<a href="http://www.codecommit.com/blog/ruby/monads-are-not-metaphors" target="_blank">Daniel Spiewak</a></span>
+				</section>
+				<section>
+					<h3>A Few Monads</h3>
+					</p>
+					<ul>
+						<li>Identity Monad</li>
+						<li>Maybe/Option Monad</li>
+						<li>List Monad</li>
+						<li>IO Monad</li>
+						<li>State Monad</li>
+						<li>Writer Monad</li>
+						<li>Reader Monad</li>
+						<li>Continuation Monad</li>
+					</ul>
+				</section>	
+				<section>
+					<h3>Monad Laws</h3>
+					</p>
+					<ul>
+						<li>Left Identity: return x >>= f ≡ f x</li>
+						<li>Right Identity: m >>= return ≡ m</li>
+						<li>Associativity: (m >>= f) >>= g ≡ m >>= (\x -> f x >>= g)</li>
+					</ul>
+				</section>		
+				<section>
+					<h3>Maybe/Option Monad</h3>
+					</p>
+					<span>Context of possible value absence</span>
+<pre><code>
+-- data Maybe a = Just a | Nothing 
+--   deriving (Eq, Ord)
+
+<span class="fragment">returnMaybe :: a -> Maybe a</span>
+<span class="fragment">returnMaybe a = Just a</span>
+
+<span class="fragment">returnMaybe 7 = Just 7</span>
+
+<span class="fragment">bindMaybe :: Maybe a -> (a -> Maybe b) -> Maybe b</span>
+<span class="fragment">Nothing `bindMaybe` _ = Nothing</span>
+<span class="fragment">Just a `bindMaybe` f = f a</span>
+
+<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe x+1) = Just 8</span>
+<span class="fragment">Nothing `bindMaybe` (\x -> returnMaybe x+1) = Nothing</span>
+<span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe x+1) `bindMaybe` 
+  (\x -> returnMaybe x*5) = Just 40</span>
+
+</code></pre>
+				</section>
+				<section>
+					<h3>Option in Java 8</h3>
+<pre><code>
+public abstract class Option&lt;A&gt; {
+
+    <span class="fragment" data-fragment-index="1">public abstract &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends 
+      Option&lt;B&gt;&gt; func);</span>
+
+    <span class="fragment" data-fragment-index="2">public abstract boolean isDefined();</span>
+
+    <span class="fragment" data-fragment-index="3">public static &lt;A&gt; Some&lt;A&gt; some(A value) {
+        if (value == null) throw new NullPointerException();
+        return new Some&lt;A&gt;(value);
+    }</span>
+
+    <span class="fragment" data-fragment-index="4">public static &lt;A&gt; None&lt;A&gt; none() {
+        return NONE;
+    }</span>
+
+    <span class="fragment" data-fragment-index="6">public static &lt;A&gt; Option&lt;A&gt; option(A value) {
+        if (value == null) return none();
+        else return some(value);
+    }</span>
+
+    <span class="fragment" data-fragment-index="5">public static final None NONE = new None();</span>
+}
+
+</code></pre>
+				</section>
+<section>
+<pre><code>
+public static final class None&lt;A&gt; extends Option&lt;A&gt; {
+
+    <span class="fragment">@Override
+    public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; 
+      func) {
+        return NONE;
+    }</span>
+
+    <span class="fragment">@Override
+    public boolean isDefined() {
+        return false;
+    }</span>
+}
+
+</code></pre>
+				</section>
+				<section>
+<pre><code>
+public static final class Some&lt;A&gt; extends Option&lt;A&gt; {
+
+    <span class="fragment">private final A value;
+
+    private Some(A value) {
+        this.value = value;
+    }</span>
+
+    <span class="fragment">@Override
+    public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; 
+      func) {
+        return (Option&lt;B&gt;) mapper.apply(value);
+    }</span>
+
+    <span class="fragment">@Override
+    public boolean isDefined() {
+        return true;
+    }</span>
+}
+
+</code></pre>		
+				</section>
+				<section>
+					<h3>List Monad</h3>
+					</p>
+					<span>Context of non-determinism</span>
+<pre><code>
+-- picture constructor something like: data [a] = [] | a:[a]
+
+<span class="fragment">returnList :: a -> [a]</span>
+<span class="fragment">returnList a = [a]</span>
+
+<span class="fragment">returnList "Bar" = ["Bar"]</span>
+
+<span class="fragment">bindList :: [a] -> (a -> [b]) -> [b]</span>
+<span class="fragment">bindList l f = foldr (\x acc -> f x ++ acc) [] l</span>
+
+<span class="fragment">["Super", "Spider", "Bar"] `bindList` (\x -> returnList x ++ "man")</span>
+<span class="fragment">["Superman", "Spiderman", "Barman"]</span>
+
+</code></pre>
+				</section>
+				<section>
+<pre><code>
+public abstract class List&lt;A&gt; {
+
+    <span class="fragment" data-fragment-index="1">public abstract List&lt;A&gt; append(List&lt;A&gt; list);</span>
+
+    <span class="fragment" data-fragment-index="2">public abstract &lt;B&gt; B foldRight(BiFunction&lt;? super A, B, B&gt; func, B acc);</span>
+
+    <span class="fragment" data-fragment-index="3">public abstract &lt;B&gt; List&lt;B&gt; flatMap(Function&lt;? super A, ? extends 
+      List&lt;B&gt;&gt; func);</span>
+
+    <span class="fragment" data-fragment-index="4">public static &lt;A&gt; List&lt;A&gt; cons(A value, List&lt;A&gt; list) {
+        return new ItemList&lt;A&gt;(value, list);
+    }</span>
+
+    <span class="fragment" data-fragment-index="5">public static &lt;A&gt; EmptyList&lt;A&gt; emptyList() {
+        return EMPTY_LIST;
+    }</span>
+
+    <span class="fragment" data-fragment-index="7">public static &lt;A&gt; List&lt;A&gt; itemList(A... values) {
+        if (values.length == 0) return EMPTY_LIST;
+        List&lt;A&gt; list = EMPTY_LIST;
+        for (int i = values.length - 1; i &gt;= 0; i--) {
+            list = cons(values[i], list);
+        }
+        return list;
+    }</span>
+    <span class="fragment" data-fragment-index="6">public static final EmptyList EMPTY_LIST = new EmptyList();</span>
+}
+</code></pre>
+				</section>
+				<section>
+<pre><code>
+private static class EmptyList&lt;A&gt; extends List&lt;A&gt; {
+
+    <span class="fragment">@Override
+    public List&lt;A&gt; append(List&lt;A&gt; list) {
+       return list;
+    }</span>
+
+    <span class="fragment">@Override
+    public &lt;B&gt; B foldRight(BiFunction&lt;? super A, B, B&gt; func, B acc) {
+        return acc;
+    }</span>
+
+    <span class="fragment">@Override
+    public &lt;B&gt; List&lt;B&gt; flatMap(Function&lt;? super A, ? extends List&lt;B&gt;&gt; func) {
+        return EMPTY_LIST;
+    }</span>
+}
+
+</code></pre>
+				</section>
+				<section>
+<pre><code>
+private static class ItemList&lt;A&gt; extends List&lt;A&gt; {
+
+    <span class="fragment">private final A value;
+    private final List&lt;A&gt; next;
+
+    private ItemList(A value, List&lt;A&gt; next) {
+        this.value = value;
+        this.next = next;
+    }</span>
+
+    <span class="fragment">@Override
+    public List&lt;A&gt; append(List&lt;A&gt; list) {
+        return new ItemList<>(value, next.foldRight(List::cons, list));
+    }</span>
+
+    <span class="fragment">@Override
+    public &lt;B&gt; B foldRight(BiFunction&lt;? super A, B, B&gt; func, B acc) {
+        return func.apply(value, next.foldRight(func, acc));
+    }</span>
+
+    <span class="fragment">@Override
+    public &lt;B&gt; List&lt;B&gt; flatMap(Function&lt;? super A, ? extends List&lt;B&gt;&gt; func) {
+        return foldRight((value, acc) -&gt; (func.apply(value)).append(acc), 
+          (List&lt;B&gt;) EMPTY_LIST);
+    }</span>
+}
+
+</code></pre>
+				</section>	
+				</section>
+				<section>
+				<section>
+					<div style="position: fixed; left: 5%"><img src="images/context.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; top: 50%; left: 5%"><img src="images/purpose-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<img src="images/monadman.png" style="background: none; border: none; box-shadow: none;"/>
+					<div style="position: fixed; left: 69%; top: 2%"><img src="images/costume.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; left: 70%; top: 49%"><img src="images/powers.png" style="background: none; border: none; box-shadow: none;"/></div>
+            			</section>
+				<section>
+					<h3>Why Monads Are Useful</h3>
+					<p>
+					They help to combat the perils of:
+					</p>
+					<ul>
+						<li>Code duplication</li>
+						<li>Unnecessary complexity</li>
+						<li>Poor maintainability</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Monadic Heroes</h3>
+					</p>
+					<ul>
+						<li>Identity Monad: Can blend in anywhere</li>
+						<li>Maybe Monad: If this hero succeeds, you'll know it</li>
+						<li>List Monad: Can do many things at once</li>
+						<li>IO Monad: Puts world manipulators where they belong</li>
+						<li>State Monad: Always keeps track of the state of affairs</li>
+						<li>Writer Monad: Never forgets a detail</li>
+						<li>Reader Monad: Can tell what you're thinking</li>
+						<li>Continuation Monad: Can travel through time</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Maybe/Option Monad Example Use</h3>
+					</p>
+<pre><code>	
+currencySupply = [(20, 5), (50, 10), (100, 1)]
+
+<span class="fragment">-- lookup :: Eq a => a -> [(a, b)] -> Maybe b</span>
+
+<span class="fragment">unitsLeft :: [(Int, Int)] -> Int -> Int -> Maybe Int</span>
+<span class="fragment">unitsLeft supply val num = (lookup val supply) `bindMaybe` 
+  (\u -> if u - num < 0 then Nothing else returnMaybe (u - num))</span>
+
+<span class="fragment">take3twenties = unitsLeft currencySupply 20 3
+-- Just 2</span>
+
+<span class="fragment">take10twenties = unitsLeft currencySupply 20 10
+-- Nothing</span>
+
+<span class="fragment">take1seventy = unitsLeft currencySupply 70 1
+-- Nothing</span>
+
+</code></pre>
+				</section>
+				<section>
+<pre><code>		
+public static &lt;K, V&gt; Option&lt;V&gt; lookup(List&lt;Tuple&lt;K, V&gt;&gt; tupleList, K key) {
+    return tupleList.foldRight((tuple, acc) -&gt; tuple.first().equals(key) 
+      ? some(tuple.second()) : acc, (Option&lt;V&gt;) none());
+}
+
+<span class="fragment">public static Option&lt;Integer&gt; unitsLeft(List&lt;Tuple&lt;Integer, Integer&gt;&gt; 
+  currencySupply, Integer value, Integer unitsWanted) {
+    Option&lt;Integer&gt; none = none();
+    return lookup(currencySupply, value).flatMap(numUnits -&gt; 
+      (numUnits - unitsWanted &lt; 0) ? none : some(numUnits - unitsWanted));
+}</span>	
+
+</code></pre>
+				</section>	
+				<section>
+					<h3>List Monad Example Use</h3>
+					</p>
+<pre><code>	
+listNotes :: [Int] -> [String] -> [String]
+<span class="fragment">listNotes amts curs = amts `bindList` (\amt -> curs `bindList` (\cur -> 
+  returnList (cur ++ (show amt))))</span>
+
+<span class="fragment">machineNotes = listNotes [20, 50, 100] ["$AU", "$NZ"]
+-- ["$AU20.0","$NZ20.0","$AU50.0","$NZ50.0","$AU100.0","$NZ100.0"]</span>
+	
+</code></pre>
+				</section>
+				<section>
+<pre><code>			
+public static &lt;String&gt; List&lt;String&gt; listNotes(List&lt;Integer&gt; amounts, 
+  List&lt;String&gt; currencies) {
+    return amounts.flatMap(amount -&gt; (List&lt;String&gt;) currencies
+      .flatMap(currency -&gt; itemList(currency + amount.toString())));
+}
+
+</code></pre>
+				</section>
+				</section>
+				<section>	
+				<section>
+					<div style="position: fixed; left: 5%"><img src="images/context.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; top: 50%; left: 5%"><img src="images/purpose.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<img src="images/monadman.png" style="background: none; border: none; box-shadow: none;"/>
+					<div style="position: fixed; left: 69%; top: 2%"><img src="images/costume.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; left: 70%; top: 49%"><img src="images/powers-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+            			</section>
+				<section>
+					<span>Let's implement sequence...</span><br>
+					<span class="fragment"><strong>List (Monad a)) &rarr; Monad (List a)</strong></span>
+				</section>
+				<section>
+				<h3>Sequence Maybe Demo</h3>
+<pre><code>			
+checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
+<span class="fragment">checkComboServiceable cur combo = sequenceMaybe (foldr (\(val,num) acc -> 
+  (unitsLeft cur val num):acc) [] combo)</span>
+
+<span class="fragment">supplyAfter70Combo = checkComboServiceable currencySupply [(20, 1), (50, 1)] 
+-- Just [4,9]</span>
+
+<span class="fragment">supplyAfter170Combo = checkComboServiceable currencySupply [(20, 6), (50, 1)]
+-- Nothing</span>
+
+</code></pre>
+				</section>
+				<section>
+					<h3>Sequence List Demo</h3>
+<pre><code>
+createValueUnitPairs :: Int -> Int -> [(Int, Int)]
+<span class="fragment">createValueUnitPairs amt val = zip (repeat val) [0..floor(amt/val)]</span>
+
+<span class="fragment">createValueUnitPairs 70 20
+-- [(20, 0), (20, 1), (20, 2), (20, 3)]</span>
+
+<span class="fragment">combinations amt = sequenceList (foldr (\val acc -> 
+  (createValueUnitPairs amt val):acc) [] (20, 50, 100))</span>
+
+<span class="fragment">combinations 70
+-- [[(20, 0), (50, 0), (100, 0)], 
+--  [(20, 0), (50, 1), (100, 0)],
+--  [(20, 1), (50, 0), (100, 0)],
+--  [(20, 1), (50, 1), (100, 0)],
+--  [(20, 2), (50, 0), (100, 0)],
+--  [(20, 2), (50, 1), (100, 0)],
+--  [(20, 3), (50, 0), (100, 0)],
+--  [(20, 3), (50, 1), (100, 0)]]</span>
+
+</code></pre>
+				</section>
+				<section>
+					<h3>Implementing Sequence For Maybe</h3>
+<pre><code>
+mapMaybe :: (a -> b) -> Maybe a -> Maybe b
+<span class="fragment" data-fragment-index="2">mapMaybe _ Nothing = Nothing
+mapMaybe f (Just a) = Just (f a)</span>
+
+<span class="fragment" data-fragment-index="1">liftMaybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c</span>
+<span class="fragment" data-fragment-index="3">liftMaybe f ma mb = (mapMaybe f ma) `bindMaybe` (`mapMaybe` mb)</span>
+
+<span class="fragment" data-fragment-index="4">sequenceMaybe :: [Maybe a] -> Maybe [a]</span>
+<span class="fragment" data-fragment-index="5">sequenceMaybe ls = foldr (l acc -> liftMaybe (:) l acc) (returnMaybe []) ls</span>
+
+<span class="fragment" data-fragment-index="6">sequenceMaybe [Just 4, Just 3, Just 7] = </span>
+<span class="fragment" data-fragment-index="7">[Just 4, Just 3, Just 7]  Just 7:[]</span>
+<span class="fragment" data-fragment-index="8">[Just 4, Just 3]          Just 3:[7]</span>
+<span class="fragment" data-fragment-index="9">[Just 4]                  Just 4:[3,7]</span>
+<span class="fragment" data-fragment-index="10">[]                        Just [4,3,7]</span>
+
+</code></pre>
+				</section>
+				<section>
+					<h3>Implementing Sequence For List</h3>
+<pre><code>
+mapList :: (a -> b) -> [a] -> [b]
+mapList f l = foldr (\x acc -> (f x):acc) [] l
+
+<span class="fragment" data-fragment-index="1">liftList :: (a -> b -> c) -> [a] -> [b] -> [c]</span>
+<span class="fragment" data-fragment-index="3" style="position:absolute; z-index: 1;"><span class="fragment fade-out" data-fragment-index="3">liftMaybe f ma mb = (mapMaybe f ma) `bindMaybe` (`mapMaybe` mb)</span></span><span class="fragment roll-in" data-fragment-index="4" style="position:absolute; z-index: 2;">liftList f la lb = (mapList f la) `bindList` (`mapList` lb)</span>
+
+<span class="fragment" data-fragment-index="2">sequenceList :: [[a]] -> [[a]]</span>
+<span class="fragment" data-fragment-index="4" style="position:absolute; z-index: 1;"><span class="fragment fade-out" data-fragment-index="7">sequenceMaybe ls = foldr (l acc -> liftMaybe (:) l acc) (returnMaybe []) ls</span></span><span class="fragment roll-in" data-fragment-index="8" style="position:absolute; z-index: 2;">sequenceList ls = foldr (l acc -> liftList (:) l acc) (returnList []) ls</span>
+
+<span class="fragment" data-fragment-index="9">sequenceList [[(20,0),(20,1),(20,2)],[(50,0),(50,1)]] = </span>
+<span class="fragment" data-fragment-index="10">[[(20,0),(20,1)],[(50,0),(50,1)]]  [(50,0):[],(50,1):[]]</span>
+<span class="fragment" data-fragment-index="11">[[(20,0),(20,1)]]                  [(20,0):[(50,0)],(20,0):[(50,1)],
+                                    (20,1):[(50,0)],(20,1):[(50,1)]]</span>
+<span class="fragment" data-fragment-index="13">[]                                 [[(20,0),(50,0)],[(20,0),(50,1)],
+                                    [(20,1),(50,0)],[(20,1),(50,1)]]</span>
+
+<span class="fragment" data-fragment-index="10">liftList (:) [(50,0),(50,1)] [[]] 
+  = (mapList (:) [(50,0),(50,1)]) `bindList` (`mapList` [[]])
+  = [(\x -> (50,0):x), (\x -> (50,1):x)] `bindList` (`mapList` [[]])</span>
+
+<span class="fragment" data-fragment-index="12">liftList (:) [(20,0),(20,1)] [[(50,0)],[(50,1)]] 
+  = (mapList (:) [(20,0),(20,1)]) `bindList` (`mapList` [[(50,0)],[(50,1)]])
+  = [(\x -> (20,0):x),(\x -> (20,1):x)] `bindList` 
+      (`mapList` [[(50,0)],[(50,1)]])</span>
+
+</code></pre>
+				</section>
+				<section>
+					<h3>Monad Type Class</h3>
+<pre><code>
+class Monad m where
+  (>>=) :: m a -> (a -> m b) -> m b
+  return :: a -> m a
+
+<span class="fragment">instance Monad Maybe where
+  Nothing (>>=) _ = Nothing
+  Just a (>>=) f = f a  
+  return a = Just a</span>
+
+<span class="fragment">instance Monad [] where
+  l (>>=) f = foldr (\x acc -> f x ++ acc) [] l  
+  return x = [x]</span>
+
+<span class="fragment">fmap :: Monad m => (a -> b) -> m a -> m b</span>
+<span class="fragment">fmap f ma = ma >>= (\a -> return (f a))</span>
+
+<span class="fragment">liftM2 :: Monad m => [m a] -> m [a]</span>
+<span class="fragment">liftM2 f ma mb = (fmap f ma) >>= (`fmap` mb)</span>
+
+<span class="fragment">sequence :: Monad m => [m a] -> m [a]</span>
+<span class="fragment">sequence l = foldr (m acc -> liftM2 (:) m acc) (return []) l</span>
+
+</code></pre>
+				</section>
+				<section>
+					<h3>Monad's Secret Weapon:<br>The Monad Library</h3>
+					</p>
+					<ul>
+						<li>sequence</li>
+						<li>ap</li>
+						<li>liftM2</li>
+						<li>join</li>
+						<li>filterM</li>
+						<li>forM</li>
+						<li>foldM</li>
+						<li>when</li>
+						<li>...and dozens more</li>
+					</ul>
+				</section>
+				</section>
+				<section>
+					<div style="position: fixed; left: 5%"><img src="images/context-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; top: 50%; left: 5%"><img src="images/purpose-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<img src="images/monadman.png" style="background: none; border: none; box-shadow: none;"/>
+					<div style="position: fixed; left: 69%; top: 2%"><img src="images/costume-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+					<div style="position: fixed; left: 70%; top: 49%"><img src="images/powers-highlighted.png" style="background: none; border: none; box-shadow: none;"/></div>
+            			</section>
+				<section>				
+				<section>
+					<h2>Links, References and&nbsp;Credits</h2>
+					<img src="images/book-cat.jpg" style="background: none; border: none; box-shadow: none; width: 550px;"/>					
+            			</section>
+				<section>
+					<h3>Code Credits</h3>
+					<ul>
+					    <li><a href="http://github.com/mariofusco/javaz" target="_blank">Mario Fusco: Javaz</a></li>
+					    <li><a href="http://github.com/tonymorris/course" target="_blank">Tony Morris: Course</a></li>
+					</ul>
+    				</section>
+				<section>
+					<h3>Image Credits</h3>
+					<ul>
+					    <li><a href="http://openclipart.org" target="_blank">Open Clip Art Library</a></li>
+					    <li><a href="http://www.heromachine.com" target="_blank">HeroMachine</a></li>
+					    <li><a href="http://www.flickr.com/photos/karenblixen/6893543810/" target="_blank">Book cat</a></li>
+					    <li><a href="http://www.flickr.com/photos/theyoungthousands/1572001836/in/photostream/" target="_blank">Hero dog</a></li>
+					</ul>
+    				</section>
+				<section>
+					<h3>References</h3>
+					<ul>
+					    <li><a href="http://www.serpentine.com/blog/2008/01/17/the-monad-squad" target="_blank">The Monad Squad</a></li>
+					    <li><a href="http://www.codecommit.com/blog/ruby/monads-are-not-metaphors" target="_blank">Monads Are Not Metaphors</a></li>
+					</ul>
+    				</section>
+				<section>
+					<h3>Recommended Reading</h3>
+					<ul>
+					    <li><a href="http://learnyouahaskell.com" target="_blank">Learn You A Haskell</a></li>
+					    <li><a href="http://pragprog.com/book/vsjava8/functional-programming-in-java" target="_blank">Functional Programming in Java</a></li>
+					</ul>
+    				</section>
+				</section>
+				<section>
+				<section>
+					<h2>Questions?</h2>
+            				<h3>Slides: <br><a href="http://monads.codemiller.com">monads.codemiller.com</a></h3>
+					<img src="images/super-dog.jpg" style="background: none; border: none; box-shadow: none; width: 350px;"/>
+            				<h3>Code: <br><a href="http://github.com/codemiller/superhero-monads" target="_blank">github.com/codemiller<br />/superhero-monads</a><h3>			
+            			</section>
+				</section>	
 			</div>
 
 		</div>

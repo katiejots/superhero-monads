@@ -19,7 +19,7 @@ var Reveal = (function(){
 
 			// The "normal" size of the presentation, aspect ratio will be preserved
 			// when the presentation is scaled to fit different resolutions
-			width: 960,
+			width: 1100,
 			height: 700,
 
 			// Factor of the display size that should remain empty around the content
@@ -65,7 +65,7 @@ var Reveal = (function(){
 			mouseWheel: false,
 
 			// Apply a 3D roll to links on hover
-			rollingLinks: true,
+			rollingLinks: false,
 
 			// Theme (see /css/theme)
 			theme: null,
