@@ -14,9 +14,9 @@ Just a `bindMaybe` f = f a
 
 
 
-returnExample = returnMaybe 7
+returnMaybeExample = returnMaybe 7
 
-bindExample1 = Just 7 `bindMaybe` (\x -> returnMaybe (x+1))
-bindExample2 = Nothing `bindMaybe` (\x -> returnMaybe (x+1))
-bindExample3 = Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) `bindMaybe` (\x -> returnMaybe (x*5))
+bindMaybeExample1 = Just 7 `bindMaybe` (\x -> returnMaybe (x+1))
+bindMaybeExample2 = Nothing `bindMaybe` (\x -> returnMaybe (x+1))
+bindMaybeExample3 = Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) `bindMaybe` (\x -> returnMaybe (x*5))
 
