@@ -10,7 +10,7 @@ import static com.codemiller.superheromonads.Tuple.tuple;
  */
 public class CashMachineTest {
 
-    private List<Tuple<Double, Integer>> currencySupply = itemList(tuple(20.0, 5), tuple(50.0, 10), tuple(100.0, 0));
+    private List<Tuple<Integer, Integer>> currencySupply = itemList(tuple(20, 5), tuple(50, 10), tuple(100, 0));
 
     @Test
     public void testUnitsLeftAfterTakeThreeTwenties() {
@@ -18,7 +18,7 @@ public class CashMachineTest {
         // And that we want three units
 
         // When unitsLeft is called
-        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 20.0, 3);
+        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 20, 3);
 
         // Then we find out this would leave Some(2) units left
         assert (result.equals(Option.some(2)));
@@ -30,7 +30,7 @@ public class CashMachineTest {
         // And that we want one unit
 
         // When unitsLeft is called
-        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 100.0, 1);
+        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 100, 1);
 
         // Then we find out this would result in None
         assert (result.equals(Option.none()));
@@ -53,7 +53,7 @@ public class CashMachineTest {
     public void testSeventyComboServiceable() {
         // Given a currency combination with a value of 70.0
         // And a currency supply
-        List<Tuple<Double, Integer>> combination = List.itemList(tuple(20.0, 1), tuple(50.0, 1));
+        List<Tuple<Integer, Integer>> combination = List.itemList(tuple(20, 1), tuple(50, 1));
 
         // When checkAmountServiceable is called
         Option<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);
@@ -66,7 +66,7 @@ public class CashMachineTest {
     public void testOneHundredAndSeventyComboNotServiceable() {
         // Given a currency combination with a value of 170.0 that exceeds the number of units of a currency
         // And a currency supply
-        List<Tuple<Double, Integer>> combination = List.itemList(tuple(20.0, 6), tuple(50.0, 1));
+        List<Tuple<Integer, Integer>> combination = List.itemList(tuple(20, 6), tuple(50, 1));
 
         // When checkAmountServiceable is called
         Option<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);
@@ -80,10 +80,10 @@ public class CashMachineTest {
         // Given an amount and a currency value
 
         // When createValueUnitTuplesForValue is called
-        List<Tuple<Double, Integer>> result = CashMachine.createValueUnitTuplesForValue(100.0, 50.0);
+        List<Tuple<Integer, Integer>> result = CashMachine.createValueUnitTuplesForValue(100, 50);
 
         // Then all the possible pairings are returned
-        assert (result.equals(List.itemList(tuple(50.0, 0), tuple(50.0, 1), tuple(50.0, 2))));
+        assert (result.equals(List.itemList(tuple(50, 0), tuple(50, 1), tuple(50, 2))));
     }
 
     @Test
@@ -91,15 +91,15 @@ public class CashMachineTest {
         // Given an amount and a list of currency values
 
         // When findCombinationSearchSpaceForAmount is called
-        List<List<Tuple<Double, Integer>>> result = CashMachine.findCombinationSearchSpaceForAmount(50.0, itemList(20.0, 50.0));
+        List<List<Tuple<Integer, Integer>>> result = CashMachine.findCombinationSearchSpaceForAmount(50, itemList(20, 50));
 
         // Then all possible combinations that could be picked, given that amount is the ceiling for any individual currency, are returned
-        assert (result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 0)),
-                itemList(tuple(20.0, 0), tuple(50.0, 1)),
-                itemList(tuple(20.0, 1), tuple(50.0, 0)),
-                itemList(tuple(20.0, 1), tuple(50.0, 1)),
-                itemList(tuple(20.0, 2), tuple(50.0, 0)),
-                itemList(tuple(20.0, 2), tuple(50.0, 1)))));
+        assert (result.equals(itemList(itemList(tuple(20, 0), tuple(50, 0)),
+                itemList(tuple(20, 0), tuple(50, 1)),
+                itemList(tuple(20, 1), tuple(50, 0)),
+                itemList(tuple(20, 1), tuple(50, 1)),
+                itemList(tuple(20, 2), tuple(50, 0)),
+                itemList(tuple(20, 2), tuple(50, 1)))));
     }
 
     @Test
@@ -107,12 +107,12 @@ public class CashMachineTest {
         // Given an amount and a list of currency values
 
         // When findCombinationsForAmount is called
-        List<List<Tuple<Double, Integer>>> result = CashMachine.findCombinationsForAmount(100.0, itemList(20.0, 50.0, 100.0));
+        List<List<Tuple<Integer, Integer>>> result = CashMachine.findCombinationsForAmount(100, itemList(20, 50, 100));
 
         // Then all combinations that equal that amount are returned
-        assert (result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 0), tuple(100.0, 1)),
-                itemList(tuple(20.0, 0), tuple(50.0, 2), tuple(100.0, 0)),
-                itemList(tuple(20.0, 5), tuple(50.0, 0), tuple(100.0, 0)))));
+        assert (result.equals(itemList(itemList(tuple(20, 0), tuple(50, 0), tuple(100, 1)),
+                itemList(tuple(20, 0), tuple(50, 2), tuple(100, 0)),
+                itemList(tuple(20, 5), tuple(50, 0), tuple(100, 0)))));
     }
 
     @Test
@@ -120,10 +120,10 @@ public class CashMachineTest {
         // Given an amount and a machine currency supply
 
         // When findServiceableCombinations is called
-        List<List<Tuple<Double, Integer>>> result = CashMachine.findServiceableCombinations(100.0, currencySupply);
+        List<List<Tuple<Integer, Integer>>> result = CashMachine.findServiceableCombinations(100, currencySupply);
 
         // Then all combinations that are serviceable for that amount are returned
-        assert (result.equals(itemList(itemList(tuple(20.0, 0), tuple(50.0, 2), tuple(100.0, 0)),
-                itemList(tuple(20.0, 5), tuple(50.0, 0), tuple(100.0, 0)))));
+        assert (result.equals(itemList(itemList(tuple(20, 0), tuple(50, 2), tuple(100, 0)),
+                itemList(tuple(20, 5), tuple(50, 0), tuple(100, 0)))));
     }
 }
