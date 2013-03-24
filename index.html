@@ -125,9 +125,6 @@ public interface BiFunction&lt;T, U, R&gt; {
 <span class="fragment">System.out.println(map(Arrays.asList(1, 2, 3), i -> i + 1));
 // [2, 3, 4]</span>
 
-<span class="fragment">System.out.println(map(Arrays.asList(-1, 2, -3), Math::abs));
-// [1, 2, 3]</span>
-
 					</code></pre>
 				</section>
 				<section>
@@ -153,7 +150,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 				<section>
 					<h3>The Monad Costume</h3>
 					<p>
-					A monad is a structure that puts values in a computational context and generally implements two&nbsp;functions:
+					A monad is a structure that puts values in a computational context and implements two&nbsp;functions:
 					</p>
 					<ul>
 						<li class="fragment">Return: <strong>a &rarr; Monad a</strong><br>(also known as Unit/Pure)</li>						
@@ -230,23 +227,21 @@ public abstract class Option&lt;A&gt; {
     <span class="fragment" data-fragment-index="1">public abstract &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends 
       Option&lt;B&gt;&gt; func);</span>
 
-    <span class="fragment" data-fragment-index="2">public abstract boolean isDefined();</span>
-
-    <span class="fragment" data-fragment-index="3">public static &lt;A&gt; Some&lt;A&gt; some(A value) {
+    <span class="fragment" data-fragment-index="2">public static &lt;A&gt; Some&lt;A&gt; some(A value) {
         if (value == null) throw new NullPointerException();
         return new Some&lt;A&gt;(value);
     }</span>
 
-    <span class="fragment" data-fragment-index="4">public static &lt;A&gt; None&lt;A&gt; none() {
+    <span class="fragment" data-fragment-index="3">public static &lt;A&gt; None&lt;A&gt; none() {
         return NONE;
     }</span>
 
-    <span class="fragment" data-fragment-index="6">public static &lt;A&gt; Option&lt;A&gt; option(A value) {
+    <span class="fragment" data-fragment-index="5">public static &lt;A&gt; Option&lt;A&gt; option(A value) {
         if (value == null) return none();
         else return some(value);
     }</span>
 
-    <span class="fragment" data-fragment-index="5">public static final None NONE = new None();</span>
+    <span class="fragment" data-fragment-index="4">public static final None NONE = new None();</span>
 }
 
 </code></pre>
@@ -259,11 +254,6 @@ public static final class None&lt;A&gt; extends Option&lt;A&gt; {
     public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; 
       func) {
         return NONE;
-    }</span>
-
-    <span class="fragment">@Override
-    public boolean isDefined() {
-        return false;
     }</span>
 }
 
@@ -283,11 +273,6 @@ public static final class Some&lt;A&gt; extends Option&lt;A&gt; {
     public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; 
       func) {
         return (Option&lt;B&gt;) mapper.apply(value);
-    }</span>
-
-    <span class="fragment">@Override
-    public boolean isDefined() {
-        return true;
     }</span>
 }
 
@@ -317,7 +302,6 @@ public static final class Some&lt;A&gt; extends Option&lt;A&gt; {
 				<section>
 <pre><code>
 public abstract class List&lt;A&gt; {
-
     <span class="fragment" data-fragment-index="1">public abstract List&lt;A&gt; append(List&lt;A&gt; list);</span>
 
     <span class="fragment" data-fragment-index="2">public abstract &lt;B&gt; B foldRight(BiFunction&lt;? super A, B, B&gt; func, B acc);</span>
@@ -350,16 +334,6 @@ public abstract class List&lt;A&gt; {
 private static class EmptyList&lt;A&gt; extends List&lt;A&gt; {
 
     <span class="fragment">@Override
-    public List&lt;A&gt; append(List&lt;A&gt; list) {
-       return list;
-    }</span>
-
-    <span class="fragment">@Override
-    public &lt;B&gt; B foldRight(BiFunction&lt;? super A, B, B&gt; func, B acc) {
-        return acc;
-    }</span>
-
-    <span class="fragment">@Override
     public &lt;B&gt; List&lt;B&gt; flatMap(Function&lt;? super A, ? extends List&lt;B&gt;&gt; func) {
         return EMPTY_LIST;
     }</span>
@@ -377,16 +351,6 @@ private static class ItemList&lt;A&gt; extends List&lt;A&gt; {
     private ItemList(A value, List&lt;A&gt; next) {
         this.value = value;
         this.next = next;
-    }</span>
-
-    <span class="fragment">@Override
-    public List&lt;A&gt; append(List&lt;A&gt; list) {
-        return new ItemList<>(value, next.foldRight(List::cons, list));
-    }</span>
-
-    <span class="fragment">@Override
-    public &lt;B&gt; B foldRight(BiFunction&lt;? super A, B, B&gt; func, B acc) {
-        return func.apply(value, next.foldRight(func, acc));
     }</span>
 
     <span class="fragment">@Override
