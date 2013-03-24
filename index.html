@@ -526,7 +526,7 @@ checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 					<h3>Sequence List Demo</h3>
 <pre><code>
 createValueUnitPairs :: Int -> Int -> [(Int, Int)]
-<span class="fragment">createValueUnitPairs amt val = zip (repeat val) [0..floor(amt/val)]</span>
+<span class="fragment">createValueUnitPairs amt val = zip (repeat val) [0..(amt `div` val)]</span>
 
 <span class="fragment">createValueUnitPairs 70 20
 -- [(20, 0), (20, 1), (20, 2), (20, 3)]</span>
