@@ -47,7 +47,7 @@ public abstract class Option<A> {
 
     public static final None NONE = new None();
 
-    public static final class None<A> extends Option<A> {
+    private static final class None<A> extends Option<A> {
 
         @Override
         public <B> Option<B> map(Function<? super A, ? extends B> mapper) {
@@ -95,7 +95,7 @@ public abstract class Option<A> {
         }
     }
 
-    public static final class Some<A> extends Option<A> {
+    private static final class Some<A> extends Option<A> {
 
         private final A value;
 
