@@ -488,6 +488,8 @@ public static &lt;String&gt; List&lt;String&gt; listNotes(List&lt;Integer&gt; am
 				<section>
 				<h3>Sequence Maybe Demo</h3>
 <pre><code>			
+currencySupply = [(20, 5), (50, 10), (100, 1)]
+
 checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 <span class="fragment">checkComboServiceable cur combo = sequenceMaybe (foldr (\(val,num) acc -> 
   (unitsLeft cur val num):acc) [] combo)</span>
