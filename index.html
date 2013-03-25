@@ -262,7 +262,7 @@ public abstract class Option&lt;A&gt; {
 				</section>
 <section>
 <pre><code>
-public static final class None&lt;A&gt; extends Option&lt;A&gt; {
+private static final class None&lt;A&gt; extends Option&lt;A&gt; {
 
     <span class="fragment">@Override
     public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; 
@@ -275,7 +275,7 @@ public static final class None&lt;A&gt; extends Option&lt;A&gt; {
 				</section>
 				<section>
 <pre><code>
-public static final class Some&lt;A&gt; extends Option&lt;A&gt; {
+private static final class Some&lt;A&gt; extends Option&lt;A&gt; {
 
     <span class="fragment">private final A value;
 
