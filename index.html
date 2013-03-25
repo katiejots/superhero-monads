@@ -540,9 +540,9 @@ mapMaybe f (Just a) = Just (f a)</span>
 <span class="fragment" data-fragment-index="5">sequenceMaybe ls = foldr (\l acc -> liftMaybe (:) l acc) (returnMaybe []) ls</span>
 
 <span class="fragment" data-fragment-index="6">sequenceMaybe [Just 4, Just 3, Just 7] = </span>
-<span class="fragment" data-fragment-index="7">[Just 4, Just 3, Just 7]  Just 7:[]</span>
-<span class="fragment" data-fragment-index="8">[Just 4, Just 3]          Just 3:[7]</span>
-<span class="fragment" data-fragment-index="9">[Just 4]                  Just 4:[3,7]</span>
+<span class="fragment" data-fragment-index="7">[Just 4, Just 3, Just 7]  Just (7:[])</span>
+<span class="fragment" data-fragment-index="8">[Just 4, Just 3]          Just (3:[7])</span>
+<span class="fragment" data-fragment-index="9">[Just 4]                  Just (4:[3,7])</span>
 <span class="fragment" data-fragment-index="10">[]                        Just [4,3,7]</span>
 
 </code></pre>
