@@ -40,21 +40,21 @@ createValueUnitPairs amt val = zip (repeat val) [0..(amt `div` val)]
 
 -- Example use of sequence with list; calculating all the possible currency combinations to supply a given amount  
 findCombos :: Int -> [Int] -> [[(Int,Int)]]
-findCombos 0 _ = [] 
+findCombos 0 l = [] 
 findCombos amt vals = filter valEqAmount combos
-        where combos = sequence $ foldr (\val acc -> (createValueUnitPairs amt val) : acc) [] vals 
+        where combos = sequence (foldr (\val acc -> (createValueUnitPairs amt val) : acc) [] vals)
               valEqAmount combo = amt == foldr(\(val,num) acc -> val * num + acc) 0 combo 
 
 -- Function showing the result of just the combinations calculation, before the results are filtered based on value
-combinations amt = sequence $ foldr (\val acc -> (createValueUnitPairs amt val) : acc) [] (machineCurrencies currencySupply) 
+combinations amt = sequence (foldr (\val acc -> (createValueUnitPairs amt val) : acc) [] (machineCurrencies currencySupply))
 combinations70 = combinations 70
 
 -- Function showing how we could bring it all together, making use of bind (>>=) and sequence with list and Maybe to find serviceable combinations  
 findUsableCombos :: Int -> [(Int,Int)] -> [[(Int,Int)]]
-findUsableCombos amt supply = filter isUsable $ findCombos amt curs
+findUsableCombos amt supply = filter isUsable (findCombos amt curs)
         where isUsable combo = checkUsable (checkComboServiceable supply combo)
               checkUsable Nothing = False
-              checkUsable (Just _) = True 
+              checkUsable (Just x) = True 
               curs = [val | (val,num) <- supply]
 
 -- Example use of findUsableCombos

@@ -9,11 +9,11 @@ returnMaybe :: a -> Maybe a
 returnMaybe a = Just a
 
 bindMaybe :: Maybe a -> (a -> Maybe b) -> Maybe b
-Nothing `bindMaybe` _ = Nothing
+Nothing `bindMaybe` f = Nothing
 Just a `bindMaybe` f = f a
 
 mapMaybe :: (a -> b) -> Maybe a -> Maybe b
-mapMaybe _ Nothing = Nothing
+mapMaybe f Nothing = Nothing
 mapMaybe f (Just a) = Just (f a)
 
 liftMaybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
