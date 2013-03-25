@@ -28,6 +28,14 @@
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
+
+		<style>
+			.initial-hide {opacity:0; visibility:hidden;}
+			#superdef-context.visible ~ #superdef-points #superdef-context-point{opacity:1; visibility:visible;}
+			#superdef-costume.visible ~ #superdef-points #superdef-costume-point{opacity:1; visibility:visible;}
+			#superdef-purpose.visible ~ #superdef-points #superdef-purpose-point{opacity:1; visibility:visible;}
+			#superdef-powers.visible ~ #superdef-points #superdef-powers-point{opacity:1; visibility:visible;}			
+		</style>
 	</head>
 
 	<body>
@@ -42,14 +50,16 @@
 					<h3>Katie Miller (<a href="http://twitter.com/codemiller" target="_blank">@codemiller</a>)<br>Developer at <a href="http://redhat.com" target="_blank">Red Hat</a></h3>
 				</section>
 				<section>
-					<span><strong>Superhero (ˈsuːpəˌhɪərəʊ):</strong> Any of various <span class="fragment highlight-red" data-fragment-index="1">comic-strip</span> characters with <span class="fragment highlight-red" data-fragment-index="7">superhuman abilities or magical powers</span>, wearing a <span class="fragment highlight-red" data-fragment-index="3">distinctive costume</span>, and <span class="fragment highlight-red" data-fragment-index="5">fighting against evil</span> <br>- <a href="http://dictionary.reference.com/browse/superhero" target="_blank">World English Dictionary</a></span>
+					<strong>Superhero (ˈsuːpəˌhɪərəʊ):</strong> Any of various <span class="fragment highlight-red" data-fragment-index="1" id="superdef-context">comic-strip</span> characters with <span class="fragment highlight-red" data-fragment-index="4" id="superdef-powers">superhuman abilities or magical powers</span>, wearing a <span class="fragment highlight-red" data-fragment-index="2" id="superdef-costume">distinctive costume</span>, and <span class="fragment highlight-red" data-fragment-index="3" id="superdef-purpose">fighting against evil</span> <br>- <a href="http://dictionary.reference.com/browse/superhero" target="_blank">World English Dictionary</a>
 					<p>&nbsp;</p>
-					<ul>
-						<li class="fragment" data-fragment-index="2">Found in particular setting: <em>Where might you find monads?</em></li>
-						<li class="fragment" data-fragment-index="4">Distinctive costume: <em>What do monads look like?</em></li>
-						<li class="fragment" data-fragment-index="6">Force for good: <em>What are monads good for?</em></li>
-						<li class="fragment" data-fragment-index="8">Special, unexpected abilities: <em>What special or unexpected abilities do monads have?</em></li>
-					</ul>
+					<div id="superdef-points"> 
+						<ul>
+							<li class="initial-hide" id="superdef-context-point">Found in particular setting: <em>Where might you find monads?</em></li>
+							<li class="initial-hide" id="superdef-costume-point">Distinctive costume: <em>What do monads look like?</em></li>
+							<li class="initial-hide" id="superdef-purpose-point">Force for good: <em>What are monads good for?</em></li>
+							<li class="initial-hide" id="superdef-powers-point">Special, unexpected abilities: <em>What special or unexpected abilities do monads have?</em></li>
+						</ul>
+					</div>
 				</section>
 				<section>
 				<section>
