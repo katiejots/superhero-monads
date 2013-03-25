@@ -218,7 +218,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 -- Just 7</span>
 
 <span class="fragment">bindMaybe :: Maybe a -> (a -> Maybe b) -> Maybe b</span>
-<span class="fragment">Nothing `bindMaybe` _ = Nothing</span>
+<span class="fragment">Nothing `bindMaybe` f = Nothing</span>
 <span class="fragment">Just a `bindMaybe` f = f a</span>
 
 <span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe (x+1))
@@ -422,13 +422,13 @@ currencySupply = [(20, 5), (50, 10), (100, 1)]
 <span class="fragment">unitsLeft supply val num = (lookup val supply) `bindMaybe` 
   (\u -> if u - num < 0 then Nothing else returnMaybe (u - num))</span>
 
-<span class="fragment">take3twenties = unitsLeft currencySupply 20 3
+<span class="fragment">unitsLeft currencySupply 20 3
 -- Just 2</span>
 
-<span class="fragment">take10twenties = unitsLeft currencySupply 20 10
+<span class="fragment">unitsLeft currencySupply 20 10
 -- Nothing</span>
 
-<span class="fragment">take1seventy = unitsLeft currencySupply 70 1
+<span class="fragment">unitsLeft currencySupply 70 1
 -- Nothing</span>
 
 </code></pre>
@@ -457,7 +457,7 @@ listNotes :: [Int] -> [String] -> [String]
 <span class="fragment">listNotes amts curs = amts `bindList` (\amt -> curs `bindList` (\cur -> 
   returnList (cur ++ (show amt))))</span>
 
-<span class="fragment">machineNotes = listNotes [20, 50, 100] ["$AU", "$NZ"]
+<span class="fragment">listNotes [20, 50, 100] ["$AU", "$NZ"]
 -- ["$AU20","$NZ20","$AU50","$NZ50","$AU100","$NZ100"]</span>
 	
 </code></pre>
@@ -492,10 +492,10 @@ checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 <span class="fragment">checkComboServiceable cur combo = sequenceMaybe (foldr (\(val,num) acc -> 
   (unitsLeft cur val num):acc) [] combo)</span>
 
-<span class="fragment">supplyAfter70Combo = checkComboServiceable currencySupply [(20, 1), (50, 1)] 
+<span class="fragment">checkComboServiceable currencySupply [(20, 1), (50, 1)]
 -- Just [4,9]</span>
 
-<span class="fragment">supplyAfter170Combo = checkComboServiceable currencySupply [(20, 6), (50, 1)]
+<span class="fragment">checkComboServiceable currencySupply [(20, 6), (50, 1)] 
 -- Nothing</span>
 
 </code></pre>
@@ -528,7 +528,7 @@ createValueUnitPairs :: Int -> Int -> [(Int, Int)]
 					<h3>Implementing Sequence For Maybe</h3>
 <pre><code>
 mapMaybe :: (a -> b) -> Maybe a -> Maybe b
-<span class="fragment" data-fragment-index="2">mapMaybe _ Nothing = Nothing
+<span class="fragment" data-fragment-index="2">mapMaybe f Nothing = Nothing
 mapMaybe f (Just a) = Just (f a)</span>
 
 <span class="fragment" data-fragment-index="1">liftMaybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c</span>
@@ -583,7 +583,7 @@ class Monad m where
   return :: a -> m a
 
 <span class="fragment">instance Monad Maybe where
-  Nothing (>>=) _ = Nothing
+  Nothing (>>=) f = Nothing
   Just a (>>=) f = f a  
   return a = Just a</span>
 
