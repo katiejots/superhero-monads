@@ -26,5 +26,5 @@ returnMaybeExample = returnMaybe 7
 
 bindMaybeExample1 = Just 7 `bindMaybe` (\x -> returnMaybe (x+1))
 bindMaybeExample2 = Nothing `bindMaybe` (\x -> returnMaybe (x+1))
-bindMaybeExample3 = Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) `bindMaybe` (\x -> returnMaybe (x*5))
+bindMaybeExample3 = Just 7 `bindMaybe` (\x -> returnMaybe (x+1)) `bindMaybe` (\y -> returnMaybe (y*5))
 
