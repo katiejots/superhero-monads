@@ -138,7 +138,6 @@ public interface BiFunction&lt;T, U, R&gt; {
 
 <span class="fragment">System.out.println(map(Arrays.asList(1, 2, 3), <span class="fragment highlight-green">i -> i + 1</span>));
 // [2, 3, 4]</span>
-
 					</code></pre>
 				</section>
 				<section>
@@ -297,7 +296,7 @@ private static final class Some&lt;A&gt; extends Option&lt;A&gt; {
 					</p>
 					<span>Context of non-determinism</span>
 <pre><code>
--- picture a constructor something like: data [a] = [] | a:[a]
+-- picture a type declaration something like: data [a] = [] | a:[a]
 
 <span class="fragment">returnList :: a -> [a]</span>
 <span class="fragment">returnList a = [a]</span>
