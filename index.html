@@ -38,8 +38,50 @@
 			#superdef-purpose.visible ~ #superdef-points #superdef-purpose-point{opacity:1; visibility:visible;}
 			#superdef-powers.visible ~ #superdef-points #superdef-powers-point{opacity:1; visibility:visible;}
 			#sequence-liftlist.visible ~ #sequence-liftmaybe{opacity:0; visibility:hidden; display:none;}	
-			#sequence-sequencelist.visible ~ #sequence-sequencemaybe{opacity:0; visibility:hidden; display:none;}		
-		</style>
+			#sequence-sequencelist.visible ~ #sequence-sequencemaybe{opacity:0; visibility:hidden; display:none;}	
+                        @-webkit-keyframes explode { 
+			   0% { opacity: 1; }
+                           80% { opacity: 1; -webkit-transform: scale( 3 ); -moz-transform: scale( 3 ); -ms-transform: scale( 3 ); -o-transform: scale( 3 ); transform: scale( 3 ); } 
+                           100% { opacity: 0; -webkit-transform: scale( 2 ); -moz-transform: scale( 2 ); -ms-transform: scale( 2 ); -o-transform: scale( 2 ); transform: scale( 2 ); } 
+		        }
+                        @-moz-keyframes explode { 
+			   0% { opacity: 1; }
+                           80% { opacity: 1; -webkit-transform: scale( 3 ); -moz-transform: scale( 3 ); -ms-transform: scale( 3 ); -o-transform: scale( 3 ); transform: scale( 3 ); } 
+                           100% { opacity: 0; -webkit-transform: scale( 2 ); -moz-transform: scale( 2 ); -ms-transform: scale( 2 ); -o-transform: scale( 2 ); transform: scale( 2 ); } 
+		        }
+                        @-ms-keyframes explode { 
+			   0% { opacity: 1; }
+                           80% { opacity: 1; -webkit-transform: scale( 3 ); -moz-transform: scale( 3 ); -ms-transform: scale( 3 ); -o-transform: scale( 3 ); transform: scale( 3 ); } 
+                           100% { opacity: 0; -webkit-transform: scale( 2 ); -moz-transform: scale( 2 ); -ms-transform: scale( 2 ); -o-transform: scale( 2 ); transform: scale( 2 ); } 
+		        }
+                        @-o-keyframes explode { 
+			   0% { opacity: 1; }
+                           80% { opacity: 1; -webkit-transform: scale( 3 ); -moz-transform: scale( 3 ); -ms-transform: scale( 3 ); -o-transform: scale( 3 ); transform: scale( 3 ); } 
+                           100% { opacity: 0; -webkit-transform: scale( 2 ); -moz-transform: scale( 2 ); -ms-transform: scale( 2 ); -o-transform: scale( 2 ); transform: scale( 2 ); } 
+		        }
+                        @keyframes explode { 
+			   0% { opacity: 1; }
+                           80% { opacity: 1; -webkit-transform: scale( 3 ); -moz-transform: scale( 3 ); -ms-transform: scale( 3 ); -o-transform: scale( 3 ); transform: scale( 3 ); } 
+                           100% { opacity: 0; -webkit-transform: scale( 2 ); -moz-transform: scale( 2 ); -ms-transform: scale( 2 ); -o-transform: scale( 2 ); transform: scale( 2 ); } 
+		        }
+                        .reveal .slides section .fragment.explosion {
+                            opacity: 0;
+                        }
+                        .reveal .slides section .fragment.explosion.visible {
+			    -webkit-animation-name: explode;
+                            -moz-animation-name: explode;
+                            -ms-animation-name: explode;
+                            -o-animation-name: explode;
+                            animation-name: explode;
+
+			    -webkit-animation-duration: 1s;
+			    -moz-animation-duration: 1s;
+			    -ms-animation-duration: 1s;
+			    -o-animation-duration: 1s;
+			    animation-duration: 1s;
+                        }
+	               	      
+                </style>
 	</head>
 
 	<body>
@@ -604,6 +646,7 @@ class Monad m where
 </code></pre>
 				</section>
 				<section>
+				<div>
 					<h3>Monad's Secret Weapon:<br>The Monad Library</h3>
 					</p>
 					<ul>
@@ -617,6 +660,10 @@ class Monad m where
 						<li>when</li>
 						<li>...and dozens more</li>
 					</ul>
+				</div>
+				<div class="fragment explosion" style="position:absolute; z-index:2; top:40px; left:230px;">
+				    <img src="images/pow.png" style="background: none; border: none; box-shadow: none;"/>
+				</div>
 				</section>
 				</section>
 				<section>
