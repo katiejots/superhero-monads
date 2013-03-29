@@ -31,14 +31,15 @@
 
 		<style>
 			.initial-hide {opacity:0; visibility:hidden;}
-			.initial-front {position:absolute; z-index: 1;}
-			.initial-back {position:absolute; z-index: 2;}
+			.initial-front {position: absolute; z-index: 1;}
+			.initial-back {position: absolute; z-index: 2;}
 			#superdef-context.visible ~ #superdef-points #superdef-context-point{opacity:1; visibility:visible;}
 			#superdef-costume.visible ~ #superdef-points #superdef-costume-point{opacity:1; visibility:visible;}
 			#superdef-purpose.visible ~ #superdef-points #superdef-purpose-point{opacity:1; visibility:visible;}
 			#superdef-powers.visible ~ #superdef-points #superdef-powers-point{opacity:1; visibility:visible;}
 			#sequence-liftlist.visible ~ #sequence-liftmaybe{opacity:0; visibility:hidden; display:none;}	
 			#sequence-sequencelist.visible ~ #sequence-sequencemaybe{opacity:0; visibility:hidden; display:none;}	
+			#sequence-liftpartial2.visible ~ #sequence-liftpartial{opacity:0; visibility:hidden;}	
                         @-webkit-keyframes explode { 
 			   0% { opacity: 1; }
                            80% { opacity: 1; -webkit-transform: scale( 4 ); -moz-transform: scale( 4 ); -ms-transform: scale( 4 ); -o-transform: scale( 4 ); transform: scale( 4 ); } 
@@ -270,22 +271,20 @@ public interface BiFunction&lt;T, U, R&gt; {
 					<h3>Maybe in Java 8</h3>
 <pre><code>public abstract class Maybe&lt;A&gt; {
 
-    <span class="fragment" data-fragment-index="1">public abstract &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func);</span>
+    <span class="fragment">public abstract &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func);</span>
 
-    <span class="fragment" data-fragment-index="2">public static &lt;A&gt; Just&lt;A&gt; just(A value) {
-        return new Just&lt;A&gt;(value);
+    <span class="fragment">public static &lt;A&gt; Just&lt;A&gt; just(A value) {
+        return new Just&lt;&gt;(value);
     }</span>
 
-    <span class="fragment" data-fragment-index="3">public static &lt;A&gt; Nothing&lt;A&gt; nothing() {
-        return NOTHING;
+    <span class="fragment">public static &lt;A&gt; Nothing&lt;A&gt; nothing() {
+        return new Nothing&lt;&gt;();
     }</span>
 
-    <span class="fragment" data-fragment-index="5">public static &lt;A&gt; Maybe&lt;A&gt; fromNullable(A value) {
+    <span class="fragment">public static &lt;A&gt; Maybe&lt;A&gt; fromNullable(A value) {
         if (value == null) return nothing();
         else return just(value);
     }</span>
-
-    <span class="fragment" data-fragment-index="4">public static final Nothing NOTHING = new Nothing();</span>
 }
 </code></pre>
 				</section>
@@ -294,7 +293,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 
     <span class="fragment">@Override
     public &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func) {
-        return NOTHING;
+        return nothing();
     }</span>
 }
 </code></pre>
@@ -336,28 +335,28 @@ public interface BiFunction&lt;T, U, R&gt; {
 				</section>
 				<section>
 <pre><code>public abstract class List&lt;A&gt; {
-    <span class="fragment" data-fragment-index="1">public abstract List&lt;A&gt; append(List&lt;A&gt; list);</span>
+    <span class="fragment">public abstract &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func);</span>
 
-    <span class="fragment" data-fragment-index="2">public abstract &lt;B&gt; B foldRight(BiFunction&lt;A, B, B&gt; func, B acc);</span>
+    <span class="fragment">public abstract List&lt;A&gt; append(List&lt;A&gt; list);</span>
 
-    <span class="fragment" data-fragment-index="3">public abstract &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func);</span>
+    <span class="fragment">public abstract &lt;B&gt; B foldRight(BiFunction&lt;A, B, B&gt; func, B acc);</span>
 
-    <span class="fragment" data-fragment-index="4">public static &lt;A&gt; List&lt;A&gt; cons(A value, List&lt;A&gt; list) {
+    <span class="fragment">public static &lt;A&gt; List&lt;A&gt; cons(A value, List&lt;A&gt; list) {
         return new ItemList&lt;A&gt;(value, list);
     }</span>
 
-    <span class="fragment" data-fragment-index="5">public static &lt;A&gt; EmptyList&lt;A&gt; emptyList() { return EMPTY_LIST; }</span>
+    <span class="fragment">public static &lt;A&gt; EmptyList&lt;A&gt; emptyList() {
+        return new EmptyList&lt;&gt;(); 
+    }</span>
 
-    <span class="fragment" data-fragment-index="7">public static &lt;A&gt; List&lt;A&gt; itemList(A... values) {
-        if (values.length == 0) return EMPTY_LIST;
-        List&lt;A&gt; list = EMPTY_LIST;
+    <span class="fragment">public static &lt;A&gt; List&lt;A&gt; itemList(A... values) {
+        if (values.length == 0) return emptyList();
+        List&lt;A&gt; list = emptyList();
         for (int i = values.length - 1; i &gt;= 0; i--) {
             list = cons(values[i], list);
         }
         return list;
     }</span>
-
-    <span class="fragment" data-fragment-index="6">public static final EmptyList EMPTY_LIST = new EmptyList();</span>
 }
 </code></pre>
 				</section>
@@ -366,7 +365,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 
     <span class="fragment">@Override
     public &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func) {
-        return EMPTY_LIST;
+        return emptyList();
     }</span>
 }
 </code></pre>
@@ -384,7 +383,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 
     <span class="fragment">@Override
     public &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func) {
-        return foldRight((value, acc) -&gt; (func.apply(value)).append(acc), EMPTY_LIST);
+        return foldRight((value, acc) -&gt; (func.apply(value)).append(acc), emptyList());
     }</span>
 }
 </code></pre>
@@ -450,7 +449,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 <span class="fragment">public static Maybe&lt;Integer&gt; unitsLeft(List&lt;Tuple&lt;Integer, Integer&gt;&gt; currencySupply,
   Integer value, Integer unitsWanted) {
     return lookup(currencySupply, value).bind(numUnits -&gt; (numUnits - unitsWanted &lt; 0) 
-      ? Maybe.&lt;Integer&gt;nothing() : just(numUnits - unitsWanted));
+      ? nothing() : just(numUnits - unitsWanted));
 }</span>	
 </code></pre>
 				</section>	
@@ -466,10 +465,8 @@ public interface BiFunction&lt;T, U, R&gt; {
 </code></pre>
 				</section>
 				<section>
-<pre><code>public static &lt;String&gt; List&lt;String&gt; listNotes(List&lt;Integer&gt; amounts, 
-  List&lt;String&gt; currencies) {
-    return amounts.bind(amount -&gt; (List&lt;String&gt;) currencies
-      .bind(currency -&gt; itemList(currency + amount.toString())));
+<pre><code>public static &lt;String&gt; List&lt;String&gt; listNotes(List&lt;Integer&gt; amts, List&lt;String&gt; currs) {
+    return amts.bind(amt -&gt; currs.bind(curr -&gt; itemList(curr + amt.toString())));
 }
 </code></pre>
 				</section>
@@ -536,10 +533,10 @@ mapMaybe f (Just a) = Just (f a)</span>
 <span class="fragment" data-fragment-index="5">sequenceMaybe ls = foldr (\l acc -> liftMaybe (:) l acc) (returnMaybe []) ls</span>
 
 <span class="fragment" data-fragment-index="6">sequenceMaybe [Just 4, Just 3, Just 7] = </span>
-<span class="fragment" data-fragment-index="7">[Just 4, Just 3, Just 7]  Just (7:[])</span>
-<span class="fragment" data-fragment-index="8">[Just 4, Just 3]          Just (3:[7])</span>
-<span class="fragment" data-fragment-index="9">[Just 4]                  Just (4:[3,7])</span>
-<span class="fragment" data-fragment-index="10">[]                        Just [4,3,7]</span>
+<span class="fragment" data-fragment-index="7">[Just 4, Just 3, Just 7]                 Just (7:[])</span>
+<span class="fragment" data-fragment-index="8">[Just 4, Just 3]                         Just (3:[7])</span>
+<span class="fragment" data-fragment-index="9">[Just 4]                                 Just (4:[3,7])</span>
+<span class="fragment" data-fragment-index="10">[]                                       Just [4,3,7]</span>
 </code></pre>
 				</section>
 				<section>
@@ -552,21 +549,24 @@ mapList f l = foldr (\x acc -> (f x):acc) [] l
 <span class="fragment" data-fragment-index="2">sequenceList :: [[a]] -> [[a]]</span>
 <span class="fragment roll-in initial-back" data-fragment-index="6" id="sequence-sequencelist">sequenceList ls = foldr (\l acc -> liftList (:) l acc) (returnList []) ls</span><span class="fragment roll-in initial-front" data-fragment-index="5" id="sequence-sequencemaybe">sequenceMaybe ls = foldr (\l acc -> liftMaybe (:) l acc) (returnMaybe []) ls</span>
 
-<span class="fragment" data-fragment-index="9">sequenceList [[(20,0),(20,1)],[(30,0),(30,1)]] = </span>
-<span class="fragment" data-fragment-index="10">[[(20,0),(20,1)],[(30,0),(30,1)]]  [(30,0):[],(30,1):[]]</span>
-<span class="fragment" data-fragment-index="11">[[(20,0),(20,1)]]                  [(20,0):[(30,0)],(20,0):[(30,1)],
-                                    (20,1):[(30,0)],(20,1):[(30,1)]]</span>
-<span class="fragment" data-fragment-index="13">[]                                 [[(20,0),(30,0)],[(20,0),(30,1)],
-                                    [(20,1),(30,0)],[(20,1),(30,1)]]</span>
+<span class="fragment" data-fragment-index="9">sequenceList [[(20,0),(20,1),(20,2)],[(50,0),(50,1)]] = </span>
+<span class="fragment" data-fragment-index="10">[[(20,0),(20,1),(20,2)],[(50,0),(50,1)]]                [(50,0):[],(50,1):[]]</span>
+<span class="fragment" data-fragment-index="11">[[(20,0),(20,1),(20,2)]]                                [(20,0):[(50,0)],(20,0):[(50,1)],
+                                                         (20,1):[(50,0)],(20,1):[(50,1)],
+                                                         (20,2):[(50,0)],(20,2):[(50,1)]]</span>
+<span class="fragment" data-fragment-index="13">[]                                                      [[(20,0),(50,0)],[(20,0),(50,1)],
+                                                         [(20,1),(50,0)],[(20,1),(50,1)],
+                                                         [(20,2),(50,0)],[(20,2),(50,1)]]</span>
 
-<span class="fragment" data-fragment-index="10">liftList (:) [(30,0),(30,1)] [[]] 
-  = (mapList (:) [(30,0),(30,1)]) `bindList` (`mapList` [[]])
-  = [(\x -> (30,0):x), (\x -> (30,1):x)] `bindList` (`mapList` [[]])</span>
+<span class="fragment initial-back" data-fragment-index="12" id="sequence-liftpartial2">liftList (:) [(20,0),(20,1),(20,2)] [[(50,0)],[(50,1)]]
+  = (mapList (:) [(20,0),(20,1),(20,2)]) `bindList` (`mapList` [[(50,0)],[(50,1)]])
+  = [(\x -> (20,0):x),(\y -> (20,1):y),(\z -> (20,2):z)] `bindList`
+      (`mapList` [[(50,0)],[(50,1)]])</span><span class="fragment initial-front" data-fragment-index="10" id="sequence-liftpartial">liftList (:) [(50,0),(50,1)] [[]] 
+  = (mapList (:) [(50,0),(50,1)]) `bindList` (`mapList` [[]])
+  = [(\x -> (50,0):x), (\y -> (50,1):y)] `bindList` (`mapList` [[]])</span>
 
-<span class="fragment" data-fragment-index="12">liftList (:) [(20,0),(20,1)] [[(30,0)],[(30,1)]] 
-  = (mapList (:) [(20,0),(20,1)]) `bindList` (`mapList` [[(30,0)],[(30,1)]])
-  = [(\x -> (20,0):x),(\x -> (20,1):x)] `bindList` 
-      (`mapList` [[(30,0)],[(30,1)]])</span>
+
+
 </code></pre>
 				</section>
 				<section>
