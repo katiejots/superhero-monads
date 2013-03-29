@@ -28,15 +28,15 @@ public abstract class List<A> {
     public abstract <B> List<B> apply(List<Function<A, B>> functionList);
 
     public static <A> EmptyList<A> emptyList() {
-        return EMPTY_LIST;
+        return new EmptyList<>();
     }
 
     @SafeVarargs
     public static <A> List<A> itemList(A... values) {
         if (values.length == 0) {
-            return EMPTY_LIST;
+            return emptyList();
         }
-        List<A> list = EMPTY_LIST;
+        List<A> list = emptyList();
         for (int i = values.length - 1; i >= 0; i--) {
             list = cons(values[i], list);
         }
@@ -44,29 +44,27 @@ public abstract class List<A> {
     }
 
     public static <A> List<A> cons(A value, List<A> list) {
-        return new ItemList<A>(value, list);
+        return new ItemList<>(value, list);
     }
 
     public static <A> List<List<A>> sequence(List<List<A>> list) {
-        return list.foldRight((l, a) -> l.lift(List::cons, a), itemList((List<A>) EMPTY_LIST));
+        return list.foldRight((l, a) -> l.lift(List::cons, a), itemList((List<A>) List.<A>emptyList()));
     }
-
-    public static final EmptyList EMPTY_LIST = new EmptyList();
 
     private static class EmptyList<A> extends List<A> {
         @Override
         public <B> List<B> map(Function<A, B> func) {
-            return EMPTY_LIST;
+            return emptyList();
         }
 
         @Override
         public <B> List<B> bind(Function<A, List<B>> func) {
-            return EMPTY_LIST;
+            return emptyList();
         }
 
         @Override
         public List<A> filter(Predicate<A> predicate) {
-            return EMPTY_LIST;
+            return emptyList();
         }
 
         @Override
@@ -86,17 +84,17 @@ public abstract class List<A> {
 
         @Override
         public <B, C> List<C> lift(BiFunction<A, B, C> func, List<B> list) {
-            return EMPTY_LIST;
+            return emptyList();
         }
 
         @Override
         public <B> List<B> apply(List<Function<A, B>> functionList) {
-            return EMPTY_LIST;
+            return emptyList();
         }
 
         @Override
-        public boolean equals(Object obj) {
-            return obj instanceof EmptyList && obj == EMPTY_LIST;
+        public boolean equals(Object o) {
+            return this == o || (o != null && getClass() == o.getClass());
         }
 
         @Override
@@ -122,12 +120,12 @@ public abstract class List<A> {
 
         @Override
         public <B> List<B> map(Function<A, B> func) {
-            return new ItemList<B>(func.apply(value), next.map(func));
+            return new ItemList<>(func.apply(value), next.map(func));
         }
 
         @Override
         public <B> List<B> bind(Function<A, List<B>> func) {
-            return foldRight((value, accumulator) -> (func.apply(value)).append(accumulator), (List<B>) EMPTY_LIST);
+            return foldRight((value, accumulator) -> (func.apply(value)).append(accumulator), (List<B>) List.<B>emptyList());
         }
 
         @Override
@@ -169,10 +167,7 @@ public abstract class List<A> {
 
             ItemList itemList = (ItemList) o;
 
-            if (next != null ? !next.equals(itemList.next) : itemList.next != null) return false;
-            if (value != null ? !value.equals(itemList.value) : itemList.value != null) return false;
-
-            return true;
+            return !(next != null ? !next.equals(itemList.next) : itemList.next != null) && !(value != null ? !value.equals(itemList.value) : itemList.value != null);
         }
 
         @Override

@@ -55,7 +55,7 @@ public class CashMachineTest {
     public void testSeventyComboServiceable() {
         // Given a currency combination with a value of 70
         // And a currency supply
-        List<Tuple<Integer, Integer>> combination = List.itemList(tuple(20, 1), tuple(50, 1));
+        List<Tuple<Integer, Integer>> combination = itemList(tuple(20, 1), tuple(50, 1));
 
         // When checkAmountServiceable is called
         Maybe<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);
@@ -68,7 +68,7 @@ public class CashMachineTest {
     public void testOneHundredAndSeventyComboNotServiceable() {
         // Given a currency combination with a value of 170 that exceeds the number of units of a currency
         // And a currency supply
-        List<Tuple<Integer, Integer>> combination = List.itemList(tuple(20, 6), tuple(50, 1));
+        List<Tuple<Integer, Integer>> combination = itemList(tuple(20, 6), tuple(50, 1));
 
         // When checkAmountServiceable is called
         Maybe<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);

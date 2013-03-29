@@ -18,7 +18,7 @@ public class MaybeTest {
 
     @Test
     public void testMap() {
-        Map<String, String> param = new HashMap<String, String>();
+        Map<String, String> param = new HashMap<>();
         param.put("a", "5");
         param.put("b", "true");
         param.put("c", "-3");

@@ -4,8 +4,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static com.codemiller.superheromonads.List.emptyList;
-
 /**
  * @author Mario Fusco (see http://github.com/mariofusco/javaz)
  * @author Katie Miller (katie@codemiller.com)
@@ -32,7 +30,7 @@ public abstract class Maybe<A> {
     }
 
     public static <A> Nothing<A> nothing() {
-        return NOTHING;
+        return new Nothing<>();
     }
 
     public static <A> Maybe<A> fromNullable(A value) {
@@ -41,26 +39,24 @@ public abstract class Maybe<A> {
     }
 
     public static <A> Maybe<List<A>> sequence(List<Maybe<A>> list) {
-        return list.foldRight((o, a) -> o.lift(List::cons, a), (Maybe<List<A>>) just((List<A>) emptyList()));
+        return list.foldRight((o, a) -> o.lift(List::cons, a), (Maybe<List<A>>) Maybe.<List<A>>just(List.<A>emptyList()));
     }
-
-    public static final Nothing NOTHING = new Nothing();
 
     private static final class Nothing<A> extends Maybe<A> {
 
         @Override
         public <B> Maybe<B> map(Function<A, B> func) {
-            return NOTHING;
+            return nothing();
         }
 
         @Override
         public <B> Maybe<B> bind(Function<A, Maybe<B>> func) {
-            return NOTHING;
+            return nothing();
         }
 
         @Override
         public Maybe<A> filter(Predicate<A> predicate) {
-            return NOTHING;
+            return nothing();
         }
 
         @Override
@@ -75,12 +71,12 @@ public abstract class Maybe<A> {
 
         @Override
         public <B, C> Maybe<C> lift(BiFunction<A, B, C> func, Maybe<B> maybe) {
-            return NOTHING;
+            return nothing();
         }
 
         @Override
-        public boolean equals(Object obj) {
-            return obj instanceof Nothing && obj == NOTHING;
+        public boolean equals(Object o) {
+            return this == o || (o != null && getClass() == o.getClass());
         }
 
         @Override
@@ -115,7 +111,7 @@ public abstract class Maybe<A> {
         @Override
         public Maybe<A> filter(Predicate<A> predicate) {
             if (predicate.test(value)) return this;
-            else return NOTHING;
+            else return nothing();
         }
 
         @Override
@@ -140,9 +136,7 @@ public abstract class Maybe<A> {
 
             Just just = (Just) o;
 
-            if (!value.equals(just.value)) return false;
-
-            return true;
+            return value.equals(just.value);
         }
 
         @Override
