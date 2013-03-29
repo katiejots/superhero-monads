@@ -25,8 +25,6 @@ public abstract class List<A> {
 
     public abstract <B, C> List<C> lift(BiFunction<A, B, C> function, List<B> list);
 
-    public abstract <B> List<B> apply(List<Function<A, B>> functionList);
-
     public static <A> EmptyList<A> emptyList() {
         return new EmptyList<>();
     }
@@ -84,11 +82,6 @@ public abstract class List<A> {
 
         @Override
         public <B, C> List<C> lift(BiFunction<A, B, C> func, List<B> list) {
-            return emptyList();
-        }
-
-        @Override
-        public <B> List<B> apply(List<Function<A, B>> functionList) {
             return emptyList();
         }
 
@@ -153,11 +146,6 @@ public abstract class List<A> {
         @Override
         public <B, C> List<C> lift(BiFunction<A, B, C> function, List<B> list) {
             return this.bind(a -> (List<C>) list.bind(b -> List.itemList(function.apply(a, b))));
-        }
-
-        @Override
-        public <B> List<B> apply(List<Function<A, B>> functionList) {
-            return functionList.bind(this::map);
         }
 
         @Override
