@@ -5,7 +5,7 @@ import static com.codemiller.superheromonads.Maybe.just;
 import static com.codemiller.superheromonads.Maybe.sequence;
 
 /**
- * Example usages of bind and sequence for List and Option.
+ * Example usages of bind and sequence for List and Maybe.
  *
  * @author Katie Miller (katie@codemiller.com)
  */
