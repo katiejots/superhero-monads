@@ -430,8 +430,8 @@ public interface BiFunction&lt;T, U, R&gt; {
 <span class="fragment">-- lookup :: Eq a => a -> [(a, b)] -> Maybe b</span>
 
 <span class="fragment">unitsLeft :: [(Int, Int)] -> Int -> Int -> Maybe Int</span>
-<span class="fragment">unitsLeft supply val num = (lookup val supply) `bindMaybe` 
-  (\u -> if u - num < 0 then Nothing else returnMaybe (u - num))</span>
+<span class="fragment">unitsLeft supply val num = (lookup val supply) `bindMaybe` (\u -> if u - num < 0 
+  then Nothing else returnMaybe (u - num))</span>
 
 <span class="fragment">unitsLeft currencySupply 20 3
 -- Just 2</span>
