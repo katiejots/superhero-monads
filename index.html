@@ -285,7 +285,7 @@ private static final class Some&lt;A&gt; extends Option&lt;A&gt; {
     <span class="fragment">@Override
     public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; 
       func) {
-        return (Option&lt;B&gt;) mapper.apply(value);
+        return (Option&lt;B&gt;) func.apply(value);
     }</span>
 }
 
@@ -584,18 +584,18 @@ class Monad m where
   return :: a -> m a
 
 <span class="fragment">instance Monad Maybe where
-  Nothing (>>=) f = Nothing
-  Just a (>>=) f = f a  
+  Nothing >>= f = Nothing
+  Just a >>= f = f a  
   return a = Just a</span>
 
 <span class="fragment">instance Monad [] where
-  l (>>=) f = foldr (\x acc -> f x ++ acc) [] l  
+  l >>= f = foldr (\x acc -> f x ++ acc) [] l  
   return x = [x]</span>
 
 <span class="fragment">fmap :: Monad m => (a -> b) -> m a -> m b</span>
 <span class="fragment">fmap f ma = ma >>= (\a -> return (f a))</span>
 
-<span class="fragment">liftM2 :: Monad m => (a -> b -> c) -> m a -> m a -> m c</span>
+<span class="fragment">liftM2 :: Monad m => (a -> b -> c) -> m a -> m b -> m c</span>
 <span class="fragment">liftM2 f ma mb = (fmap f ma) >>= (`fmap` mb)</span>
 
 <span class="fragment">sequence :: Monad m => [m a] -> m [a]</span>
