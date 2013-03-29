@@ -141,8 +141,11 @@
 					<h3>Haskell Example</h3>
 					</p>
 					<pre><code>myList = ["a"] --"a":[]
-myFunc :: (Num a, Enum a) => [b] -> Int -> [(a,b)]
-myFunc (x:xs) n = foldr (\i acc -> (i,x):acc) [] (take n [1..])
+
+<span class="fragment">myFunc :: (Num a, Enum a) => [b] -> Int -> [(a,b)]</span>
+<span class="fragment">myFunc (x:xs) n = foldr (\i acc -> (i,x):acc) [] (take n [1..])</span>
+
+<span class="fragment">-- foldr :: (a -> b -> b) -> b -> [a] -> b</span>
 
 <span class="fragment">myFunc myList 3 =
 [1,2,3] (3,"a"):[]</span>
@@ -151,9 +154,7 @@ myFunc (x:xs) n = foldr (\i acc -> (i,x):acc) [] (take n [1..])
 <span class="fragment">[]      [(1,"a"),(2,"a"),(3,"a")]</span>
 
 <span class="fragment">myFunc myList = ?</span>	
-
-<span class="fragment">:t myFunc myList
-myFunc myList :: (Num a, Enum a) => Int -> [(a, Char)]</span></code></pre>
+<span class="fragment">myFunc myList :: (Num a, Enum a) => Int -> [(a, Char)]</span></code></pre>
 				</section>
 				<section>
 					<h3>Java 8 Lambdas</h3>
@@ -166,11 +167,10 @@ public interface BiFunction&lt;T, U, R&gt; {
     R apply(T t, U u);
 }
 
-<span class="fragment">public static List&lt;Integer&gt; map(List&lt;Integer&gt; list, Function&lt;Integer,Integer&gt;
-  func) {
+<span class="fragment">public static List&lt;Integer&gt; map(List&lt;Integer&gt; list, Function&lt;Integer, Integer&gt; func) {
     List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
     for (Integer num : list) {
-        result.add(func.apply(num));
+        result.add(<span class="fragment highlight-green">func.apply(num)</span>);
     }
     return result;
 }</span>
@@ -222,8 +222,8 @@ public interface BiFunction&lt;T, U, R&gt; {
 					</p>
 					<ul>
 						<li>Identity Monad</li>
-						<li>Maybe/Option Monad</li>
-						<li>List Monad</li>
+						<li><span class="fragment highlight-blue">Maybe/Option Monad</span></li>
+						<li><span class="fragment highlight-blue">List Monad</span></li>
 						<li>IO Monad</li>
 						<li>State Monad</li>
 						<li>Writer Monad</li>
@@ -267,50 +267,50 @@ public interface BiFunction&lt;T, U, R&gt; {
 </code></pre>
 				</section>
 				<section>
-					<h3>Option in Java 8</h3>
-<pre><code>public abstract class Option&lt;A&gt; {
+					<h3>Maybe in Java 8</h3>
+<pre><code>public abstract class Maybe&lt;A&gt; {
 
-    <span class="fragment" data-fragment-index="1">public abstract &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; func);</span>
+    <span class="fragment" data-fragment-index="1">public abstract &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func);</span>
 
-    <span class="fragment" data-fragment-index="2">public static &lt;A&gt; Some&lt;A&gt; some(A value) {
-        return new Some&lt;A&gt;(value);
+    <span class="fragment" data-fragment-index="2">public static &lt;A&gt; Just&lt;A&gt; just(A value) {
+        return new Just&lt;A&gt;(value);
     }</span>
 
-    <span class="fragment" data-fragment-index="3">public static &lt;A&gt; None&lt;A&gt; none() {
-        return NONE;
+    <span class="fragment" data-fragment-index="3">public static &lt;A&gt; Nothing&lt;A&gt; nothing() {
+        return NOTHING;
     }</span>
 
-    <span class="fragment" data-fragment-index="5">public static &lt;A&gt; Option&lt;A&gt; option(A value) {
-        if (value == null) return none();
-        else return some(value);
+    <span class="fragment" data-fragment-index="5">public static &lt;A&gt; Maybe&lt;A&gt; fromNullable(A value) {
+        if (value == null) return nothing();
+        else return just(value);
     }</span>
 
-    <span class="fragment" data-fragment-index="4">public static final None NONE = new None();</span>
+    <span class="fragment" data-fragment-index="4">public static final Nothing NOTHING = new Nothing();</span>
 }
 </code></pre>
 				</section>
 <section>
-<pre><code>private static final class None&lt;A&gt; extends Option&lt;A&gt; {
+<pre><code>private static final class Nothing&lt;A&gt; extends Maybe&lt;A&gt; {
 
     <span class="fragment">@Override
-    public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; func) {
-        return NONE;
+    public &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func) {
+        return NOTHING;
     }</span>
 }
 </code></pre>
 				</section>
 				<section>
-<pre><code>private static final class Some&lt;A&gt; extends Option&lt;A&gt; {
+<pre><code>private static final class Just&lt;A&gt; extends Maybe&lt;A&gt; {
 
     <span class="fragment">private final A value;
 
-    private Some(A value) {
+    private Just(A value) {
         this.value = value;
     }</span>
 
     <span class="fragment">@Override
-    public &lt;B&gt; Option&lt;B&gt; flatMap(Function&lt;? super A, ? extends Option&lt;B&gt;&gt; func) {
-        return (Option&lt;B&gt;) func.apply(value);
+    public &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func) {
+        return func.apply(value);
     }</span>
 }
 </code></pre>		
@@ -338,9 +338,9 @@ public interface BiFunction&lt;T, U, R&gt; {
 <pre><code>public abstract class List&lt;A&gt; {
     <span class="fragment" data-fragment-index="1">public abstract List&lt;A&gt; append(List&lt;A&gt; list);</span>
 
-    <span class="fragment" data-fragment-index="2">public abstract &lt;B&gt; B foldRight(BiFunction&lt;? super A, B, B&gt; func, B acc);</span>
+    <span class="fragment" data-fragment-index="2">public abstract &lt;B&gt; B foldRight(BiFunction&lt;A, B, B&gt; func, B acc);</span>
 
-    <span class="fragment" data-fragment-index="3">public abstract &lt;B&gt; List&lt;B&gt; flatMap(Function&lt;? super A, ? extends List&lt;B&gt;&gt; func);</span>
+    <span class="fragment" data-fragment-index="3">public abstract &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func);</span>
 
     <span class="fragment" data-fragment-index="4">public static &lt;A&gt; List&lt;A&gt; cons(A value, List&lt;A&gt; list) {
         return new ItemList&lt;A&gt;(value, list);
@@ -365,7 +365,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 <pre><code>private static class EmptyList&lt;A&gt; extends List&lt;A&gt; {
 
     <span class="fragment">@Override
-    public &lt;B&gt; List&lt;B&gt; flatMap(Function&lt;? super A, ? extends List&lt;B&gt;&gt; func) {
+    public &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func) {
         return EMPTY_LIST;
     }</span>
 }
@@ -383,9 +383,8 @@ public interface BiFunction&lt;T, U, R&gt; {
     }</span>
 
     <span class="fragment">@Override
-    public &lt;B&gt; List&lt;B&gt; flatMap(Function&lt;? super A, ? extends List&lt;B&gt;&gt; func) {
-        return foldRight((value, acc) -&gt; (func.apply(value)).append(acc), 
-          (List&lt;B&gt;) EMPTY_LIST);
+    public &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func) {
+        return foldRight((value, acc) -&gt; (func.apply(value)).append(acc), EMPTY_LIST);
     }</span>
 }
 </code></pre>
@@ -425,7 +424,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 					</ul>
 				</section>
 				<section>
-					<h3>Maybe/Option Monad Example Use</h3>
+					<h3>Maybe Monad Example Use</h3>
 					</p>
 <pre><code>currencySupply = [(20, 5), (50, 10), (100, 1)]
 
@@ -446,13 +445,12 @@ public interface BiFunction&lt;T, U, R&gt; {
 </code></pre>
 				</section>
 				<section>
-<pre><code>// public static &lt;K, V&gt; Option&lt;V&gt; lookup(List&lt;Tuple&lt;K, V&gt;&gt; tupleList, K key) { }
+<pre><code>// public static &lt;K, V&gt; Maybe&lt;V&gt; lookup(List&lt;Tuple&lt;K, V&gt;&gt; tupleList, K key) { }
 
-<span class="fragment">public static Option&lt;Integer&gt; unitsLeft(List&lt;Tuple&lt;Integer, Integer&gt;&gt; currencySupply,
+<span class="fragment">public static Maybe&lt;Integer&gt; unitsLeft(List&lt;Tuple&lt;Integer, Integer&gt;&gt; currencySupply,
   Integer value, Integer unitsWanted) {
-    Option&lt;Integer&gt; none = none();
-    return lookup(currencySupply, value).flatMap(numUnits -&gt; 
-      (numUnits - unitsWanted &lt; 0) ? none : some(numUnits - unitsWanted));
+    return lookup(currencySupply, value).bind(numUnits -&gt; (numUnits - unitsWanted &lt; 0) 
+      ? Maybe.&lt;Integer&gt;nothing() : just(numUnits - unitsWanted));
 }</span>	
 </code></pre>
 				</section>	
@@ -470,8 +468,8 @@ public interface BiFunction&lt;T, U, R&gt; {
 				<section>
 <pre><code>public static &lt;String&gt; List&lt;String&gt; listNotes(List&lt;Integer&gt; amounts, 
   List&lt;String&gt; currencies) {
-    return amounts.flatMap(amount -&gt; (List&lt;String&gt;) currencies
-      .flatMap(currency -&gt; itemList(currency + amount.toString())));
+    return amounts.bind(amount -&gt; (List&lt;String&gt;) currencies
+      .bind(currency -&gt; itemList(currency + amount.toString())));
 }
 </code></pre>
 				</section>
