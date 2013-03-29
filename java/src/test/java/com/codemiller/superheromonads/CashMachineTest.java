@@ -3,6 +3,8 @@ package com.codemiller.superheromonads;
 import org.junit.Test;
 
 import static com.codemiller.superheromonads.List.itemList;
+import static com.codemiller.superheromonads.Maybe.just;
+import static com.codemiller.superheromonads.Maybe.nothing;
 import static com.codemiller.superheromonads.Tuple.tuple;
 
 /**
@@ -14,26 +16,26 @@ public class CashMachineTest {
 
     @Test
     public void testUnitsLeftAfterTakeThreeTwenties() {
-        // Given a currency supply with 5 of the currency amount 20.0
+        // Given a currency supply with 5 of the currency amount 20
         // And that we want three units
 
         // When unitsLeft is called
-        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 20, 3);
+        Maybe<Integer> result = CashMachine.unitsLeft(currencySupply, 20, 3);
 
-        // Then we find out this would leave Some(2) units left
-        assert (result.equals(Option.some(2)));
+        // Then we find out this would leave Just(2) units left
+        assert (result.equals(just(2)));
     }
 
     @Test
     public void testUnitsLeftAfterTakeOneHundred() {
-        // Given a currency supply with 0 of the currency amount 100.0
+        // Given a currency supply with 0 of the currency amount 100
         // And that we want one unit
 
         // When unitsLeft is called
-        Option<Integer> result = CashMachine.unitsLeft(currencySupply, 100, 1);
+        Maybe<Integer> result = CashMachine.unitsLeft(currencySupply, 100, 1);
 
-        // Then we find out this would result in None
-        assert (result.equals(Option.none()));
+        // Then we find out this would result in Nothing
+        assert (result.equals(nothing()));
     }
 
     @Test
@@ -51,28 +53,28 @@ public class CashMachineTest {
 
     @Test
     public void testSeventyComboServiceable() {
-        // Given a currency combination with a value of 70.0
+        // Given a currency combination with a value of 70
         // And a currency supply
         List<Tuple<Integer, Integer>> combination = List.itemList(tuple(20, 1), tuple(50, 1));
 
         // When checkAmountServiceable is called
-        Option<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);
+        Maybe<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);
 
-        // Then a Some result showing the number of units of each currency that would remain is returned
-        assert (result.equals(Option.some(List.itemList(4, 9))));
+        // Then a Just result showing the number of units of each currency that would remain is returned
+        assert (result.equals(just(List.itemList(4, 9))));
     }
 
     @Test
     public void testOneHundredAndSeventyComboNotServiceable() {
-        // Given a currency combination with a value of 170.0 that exceeds the number of units of a currency
+        // Given a currency combination with a value of 170 that exceeds the number of units of a currency
         // And a currency supply
         List<Tuple<Integer, Integer>> combination = List.itemList(tuple(20, 6), tuple(50, 1));
 
         // When checkAmountServiceable is called
-        Option<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);
+        Maybe<List<Integer>> result = CashMachine.checkAmountServiceable(currencySupply, combination);
 
-        // Then a None result is returned
-        assert (result.equals(Option.none()));
+        // Then a Nothing result is returned
+        assert (result.equals(nothing()));
     }
 
     @Test

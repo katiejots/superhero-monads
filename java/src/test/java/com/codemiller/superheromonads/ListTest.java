@@ -64,12 +64,12 @@ public class ListTest {
     }
 
     @Test
-    public void testFlatMap() {
+    public void testBind() {
         // Given a list
         List<Integer> list = itemList(1, 2, 3);
 
-        // When a function is flatmapped over it
-        List<Integer> result = list.flatMap(integer -> itemList(integer * 2));
+        // When a function is bound over it
+        List<Integer> result = list.bind(integer -> itemList(integer * 2));
 
         // Then the result is as expected
         assert(result.equals(itemList(2, 4, 6)));

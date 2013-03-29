@@ -2,7 +2,7 @@
 
 module Example where
 
-myList = ['a'] 
+myList = ["a"] 
 
 myFunc :: (Num a, Enum a) => [b] -> Int -> [(a,b)]
 myFunc (x:xs) n = foldr (\i acc -> (i,x):acc) [] (take n [1..])

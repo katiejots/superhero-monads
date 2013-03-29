@@ -11,19 +11,19 @@ public abstract class List<A> {
     private List() {
     }
 
-    public abstract <B> List<B> map(Function<? super A, ? extends B> mapper);
+    public abstract <B> List<B> map(Function<A, B> func);
 
-    public abstract <B> List<B> flatMap(Function<? super A, ? extends List<B>> mapper);
+    public abstract <B> List<B> bind(Function<A, List<B>> func);
 
-    public abstract List<A> filter(Predicate<? super A> predicate);
+    public abstract List<A> filter(Predicate<A> predicate);
 
     public abstract boolean isEmpty();
 
-    public abstract <B> B foldRight(BiFunction<? super A, B, B> function, B accumulator);
+    public abstract <B> B foldRight(BiFunction<A, B, B> function, B accumulator);
 
     public abstract List<A> append(List<A> list);
 
-    public abstract <B, C> List<C> lift(BiFunction<? super A, ? super B, ? super C> function, List<B> list);
+    public abstract <B, C> List<C> lift(BiFunction<A, B, C> function, List<B> list);
 
     public abstract <B> List<B> apply(List<Function<A, B>> functionList);
 
@@ -55,17 +55,17 @@ public abstract class List<A> {
 
     private static class EmptyList<A> extends List<A> {
         @Override
-        public <B> List<B> map(Function<? super A, ? extends B> mapper) {
+        public <B> List<B> map(Function<A, B> func) {
             return EMPTY_LIST;
         }
 
         @Override
-        public <B> List<B> flatMap(Function<? super A, ? extends List<B>> mapper) {
+        public <B> List<B> bind(Function<A, List<B>> func) {
             return EMPTY_LIST;
         }
 
         @Override
-        public List<A> filter(Predicate<? super A> predicate) {
+        public List<A> filter(Predicate<A> predicate) {
             return EMPTY_LIST;
         }
 
@@ -75,7 +75,7 @@ public abstract class List<A> {
         }
 
         @Override
-        public <B> B foldRight(BiFunction<? super A, B, B> function, B accumulator) {
+        public <B> B foldRight(BiFunction<A, B, B> func, B accumulator) {
             return accumulator;
         }
 
@@ -85,7 +85,7 @@ public abstract class List<A> {
         }
 
         @Override
-        public <B, C> List<C> lift(BiFunction<? super A, ? super B, ? super C> function, List<B> list) {
+        public <B, C> List<C> lift(BiFunction<A, B, C> func, List<B> list) {
             return EMPTY_LIST;
         }
 
@@ -121,17 +121,17 @@ public abstract class List<A> {
         }
 
         @Override
-        public <B> List<B> map(Function<? super A, ? extends B> mapper) {
-            return new ItemList<B>(mapper.apply(value), next.map(mapper));
+        public <B> List<B> map(Function<A, B> func) {
+            return new ItemList<B>(func.apply(value), next.map(func));
         }
 
         @Override
-        public <B> List<B> flatMap(Function<? super A, ? extends List<B>> mapper) {
-            return foldRight((value, accumulator) -> (mapper.apply(value)).append(accumulator), (List<B>) EMPTY_LIST);
+        public <B> List<B> bind(Function<A, List<B>> func) {
+            return foldRight((value, accumulator) -> (func.apply(value)).append(accumulator), (List<B>) EMPTY_LIST);
         }
 
         @Override
-        public List<A> filter(Predicate<? super A> predicate) {
+        public List<A> filter(Predicate<A> predicate) {
             return (predicate.test(value))
                     ? new ItemList<>(value, next.filter(predicate))
                     : next.filter(predicate);
@@ -143,8 +143,8 @@ public abstract class List<A> {
         }
 
         @Override
-        public <B> B foldRight(BiFunction<? super A, B, B> function, B accumulator) {
-            return function.apply(value, next.foldRight(function, accumulator));
+        public <B> B foldRight(BiFunction<A, B, B> func, B accumulator) {
+            return func.apply(value, next.foldRight(func, accumulator));
         }
 
         @Override
@@ -153,13 +153,13 @@ public abstract class List<A> {
         }
 
         @Override
-        public <B, C> List<C> lift(BiFunction<? super A, ? super B, ? super C> function, List<B> list) {
-            return this.flatMap(a -> (List<C>) list.flatMap(b -> List.itemList(function.apply(a, b))));
+        public <B, C> List<C> lift(BiFunction<A, B, C> function, List<B> list) {
+            return this.bind(a -> (List<C>) list.bind(b -> List.itemList(function.apply(a, b))));
         }
 
         @Override
         public <B> List<B> apply(List<Function<A, B>> functionList) {
-            return functionList.flatMap(this::map);
+            return functionList.bind(this::map);
         }
 
         @Override

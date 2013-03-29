@@ -7,14 +7,14 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import static com.codemiller.superheromonads.List.itemList;
-import static com.codemiller.superheromonads.Option.*;
+import static com.codemiller.superheromonads.Maybe.*;
 import static org.junit.Assert.assertEquals;
 
 /**
  * @author Mario Fusco (see http://github.com/mariofusco/javaz)
  * @author Katie Miller (katie@codemiller.com)
  */
-public class OptionTest {
+public class MaybeTest {
 
     @Test
     public void testMap() {
@@ -30,40 +30,40 @@ public class OptionTest {
     }
 
     public int readPositiveIntParam(Map<String, String> params, String name) {
-        return option(params.get(name)).flatMap(OptionTest::stringToInt).filter(i -> i > 0).getOrElse(0);
+        return fromNullable(params.get(name)).bind(MaybeTest::stringToInt).filter(i -> i > 0).getOrElse(0);
     }
 
-    public static Option<Integer> stringToInt(String s) {
+    public static Maybe<Integer> stringToInt(String s) {
         try {
-            return some(Integer.parseInt(s));
+            return just(Integer.parseInt(s));
         } catch (NumberFormatException nfe) {
-            return none();
+            return nothing();
         }
     }
 
     @Test
     public void testLift() {
-        // Given a regular function that takes two arguments, and two options containing those type of values
+        // Given a regular function that takes two arguments, and two maybe types containing those type of values
         BiFunction<Integer, Integer, Integer> function = (a, b) -> a + b;
-        Option<Integer> option = some(1);
-        Option<Integer> option2 = some(2);
+        Maybe<Integer> maybe = just(1);
+        Maybe<Integer> maybe2 = just(2);
 
         // When lift is called
-        Option<Integer> result = option.lift(function, option2);
+        Maybe<Integer> result = maybe.lift(function, maybe2);
 
-        // Then the function is lifted into the option context and applied to the arguments
-        assert (result.equals(some(3)));
+        // Then the function is lifted into the maybe context and applied to the arguments
+        assert (result.equals(just(3)));
     }
 
     @Test
     public void testSequence() {
-        // Given a list of options
-        List<Option<Integer>> list = itemList(option(1), option(2), option(3));
+        // Given a list of maybes
+        List<Maybe<Integer>> list = itemList(fromNullable(1), fromNullable(2), fromNullable(3));
 
         // When sequence is called with that list
-        Option<List<Integer>> result = Option.sequence(list);
+        Maybe<List<Integer>> result = Maybe.sequence(list);
 
-        // Then the result is an option containing a list of the option contents
-        assert (result.equals(some(itemList(1, 2, 3))));
+        // Then the result is a maybe type containing a list of the maybe type contents
+        assert (result.equals(just(itemList(1, 2, 3))));
     }
 }

@@ -9,13 +9,12 @@ public class Tuple<A, B> {
     private final B b;
 
     private Tuple(A a, B b) {
-        if (a == null || b == null) throw new NullPointerException();
         this.a = a;
         this.b = b;
     }
 
     public static <A, B> Tuple<A, B> tuple(A a, B b) {
-        return new Tuple<A, B>(a, b);
+        return new Tuple<>(a, b);
     }
 
     public A first() {
