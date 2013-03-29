@@ -140,28 +140,25 @@
 				<section>
 					<h3>Haskell Example</h3>
 					</p>
-					<pre><code>
-myList = ['a'] --'a':[]
+					<pre><code>myList = ["a"] --"a":[]
 myFunc :: (Num a, Enum a) => [b] -> Int -> [(a,b)]
 myFunc (x:xs) n = foldr (\i acc -> (i,x):acc) [] (take n [1..])
 
 <span class="fragment">myFunc myList 3 =
-[1,2,3] (3,'a'):[]</span>
-<span class="fragment">[1,2]   (2,'a'):[(3,'a')]</span>
-<span class="fragment">[1]     (1,'a'):[(2,'a'),(3,'a')]</span>
-<span class="fragment">[]      [(1,'a'),(2,'a'),(3,'a')]</span>
+[1,2,3] (3,"a"):[]</span>
+<span class="fragment">[1,2]   (2,"a"):[(3,"a")]</span>
+<span class="fragment">[1]     (1,"a"):[(2,"a"),(3,"a")]</span>
+<span class="fragment">[]      [(1,"a"),(2,"a"),(3,"a")]</span>
 
 <span class="fragment">myFunc myList = ?</span>	
 
 <span class="fragment">:t myFunc myList
-myFunc myList :: (Num a, Enum a) => Int -> [(a, Char)]</span>
-					</code></pre>
+myFunc myList :: (Num a, Enum a) => Int -> [(a, Char)]</span></code></pre>
 				</section>
 				<section>
 					<h3>Java 8 Lambdas</h3>
 					</p>
-					<pre><code>
-public interface Function&lt;T, R&gt; {
+					<pre><code>public interface Function&lt;T, R&gt; {
     public R apply(T t);
 }
 
@@ -179,8 +176,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 }</span>
 
 <span class="fragment">System.out.println(map(Arrays.asList(1, 2, 3), <span class="fragment highlight-green">i -> i + 1</span>));
-// [2, 3, 4]</span>
-					</code></pre>
+// [2, 3, 4]</span></code></pre>
 				</section>
 				<section>
 					<h3>FP Benefits</h3>
