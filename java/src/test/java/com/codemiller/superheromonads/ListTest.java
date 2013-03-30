@@ -76,19 +76,6 @@ public class ListTest {
     }
 
     @Test
-    public void testApply() {
-        // Given a list with some values in it, and a list with a function in it that requires one value
-        List<Integer> list = itemList(1, 2, 3);
-        List<Function<Integer, Integer>> functionList = itemList(i -> i + 1);
-
-        // When apply is called on that value list
-        List<Integer> result = list.apply(functionList);
-
-        // Then the function is applied to the value and the wrapped in a list
-        assert(result.equals(itemList(2, 3, 4)));
-    }
-
-    @Test
     public void testLift() {
         // Given a regular function that takes two arguments, and two lists of those values
         BiFunction<Integer, Integer, Integer> function = (a, b) -> a + b;
