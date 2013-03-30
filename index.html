@@ -315,6 +315,32 @@ public interface BiFunction&lt;T, U, R&gt; {
 </code></pre>		
 				</section>
 				<section>
+					<h3>Maybe vs Null</h3>
+<pre><code>
+public static Maybe&lt;Integer&gt; processIntegerWithMaybe(Maybe&lt;Integer&gt; maybeNum) {
+    return <span class="fragment highlight-green">maybeNum.bind(x -> just(x + 1)).bind(y -> just(y * 5))</span>;
+}
+
+public static Integer processInteger(Integer num) {
+    if (num == null) return null;
+    // Or perhaps throw new IllegalArgumentException("Num cannot be null!");
+    Integer incrementedNum = increment(num);
+    if (incrementedNum == null) return null;
+    Integer multipliedNum = multiplyByFive(incrementedNum);
+    if (multipliedNum == null) return null;
+    return multipliedNum;
+}
+
+public static Integer increment(Integer num) {
+    return (num == null) ? null : num + 1;
+}
+
+public static Integer multiplyByFive(Integer num) {
+    return (num == null) ? null : num * 5;
+}
+</code></pre>
+				</section>
+				<section>
 					<h3>List Monad</h3>
 					</p>
 					<span>Context of non-determinism</span>
