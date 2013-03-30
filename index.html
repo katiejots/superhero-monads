@@ -557,11 +557,11 @@ checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 <span class="fragment" data-fragment-index="2">mapMaybe f Nothing = Nothing
 mapMaybe f (Just a) = Just (f a)</span>
 
-<span class="fragment" data-fragment-index="1">liftMaybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c</span>
-<span class="fragment" data-fragment-index="3">liftMaybe f ma mb = (mapMaybe f ma) `bindMaybe` (`mapMaybe` mb)</span>
+<span class="fragment" data-fragment-index="1">lift2Maybe :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c</span>
+<span class="fragment" data-fragment-index="3">lift2Maybe f ma mb = (mapMaybe f ma) `bindMaybe` (`mapMaybe` mb)</span>
 
 <span class="fragment" data-fragment-index="4">sequenceMaybe :: [Maybe a] -> Maybe [a]</span>
-<span class="fragment" data-fragment-index="5">sequenceMaybe ls = foldr (\l acc -> liftMaybe (:) l acc) (returnMaybe []) ls</span>
+<span class="fragment" data-fragment-index="5">sequenceMaybe ls = foldr (\l acc -> lift2Maybe (:) l acc) (returnMaybe []) ls</span>
 
 <span class="fragment" data-fragment-index="6">sequenceMaybe [Just 4, Just 3, Just 7] = </span>
 <span class="fragment" data-fragment-index="7">[Just 4, Just 3, Just 7]                 Just (7:[])</span>
@@ -574,11 +574,11 @@ mapMaybe f (Just a) = Just (f a)</span>
 <pre><code class="haskell">mapList :: (a -> b) -> [a] -> [b]
 mapList f l = foldr (\x acc -> (f x):acc) [] l
 
-<span class="fragment" data-fragment-index="1">liftList :: (a -> b -> c) -> [a] -> [b] -> [c]</span>
-<span class="fragment roll-in initial-back" data-fragment-index="4" id="sequence-liftlist">liftList f la lb = (mapList f la) `bindList` (`mapList` lb)</span><span class="fragment roll-in initial-front" data-fragment-index="3" id="sequence-liftmaybe">liftMaybe f ma mb = (mapMaybe f ma) `bindMaybe` (`mapMaybe` mb)</span>
+<span class="fragment" data-fragment-index="1">lift2List :: (a -> b -> c) -> [a] -> [b] -> [c]</span>
+<span class="fragment roll-in initial-back" data-fragment-index="4" id="sequence-liftlist">lift2List f la lb = (mapList f la) `bindList` (`mapList` lb)</span><span class="fragment roll-in initial-front" data-fragment-index="3" id="sequence-liftmaybe">lift2Maybe f ma mb = (mapMaybe f ma) `bindMaybe` (`mapMaybe` mb)</span>
 
 <span class="fragment" data-fragment-index="2">sequenceList :: [[a]] -> [[a]]</span>
-<span class="fragment roll-in initial-back" data-fragment-index="6" id="sequence-sequencelist">sequenceList ls = foldr (\l acc -> liftList (:) l acc) (returnList []) ls</span><span class="fragment roll-in initial-front" data-fragment-index="5" id="sequence-sequencemaybe">sequenceMaybe ls = foldr (\l acc -> liftMaybe (:) l acc) (returnMaybe []) ls</span>
+<span class="fragment roll-in initial-back" data-fragment-index="6" id="sequence-sequencelist">sequenceList ls = foldr (\l acc -> lift2List (:) l acc) (returnList []) ls</span><span class="fragment roll-in initial-front" data-fragment-index="5" id="sequence-sequencemaybe">sequenceMaybe ls = foldr (\l acc -> lift2Maybe (:) l acc) (returnMaybe []) ls</span>
 
 <span class="fragment" data-fragment-index="9">sequenceList [[(20,0),(20,1),(20,2)],[(50,0),(50,1)]] = </span>
 <span class="fragment" data-fragment-index="10">[[(20,0),(20,1),(20,2)],[(50,0),(50,1)]]                [(50,0):[],(50,1):[]]</span>
@@ -589,10 +589,10 @@ mapList f l = foldr (\x acc -> (f x):acc) [] l
                                                          [(20,1),(50,0)],[(20,1),(50,1)],
                                                          [(20,2),(50,0)],[(20,2),(50,1)]]</span>
 
-<span class="fragment initial-back" data-fragment-index="12" id="sequence-liftpartial2">liftList (:) [(20,0),(20,1),(20,2)] [[(50,0)],[(50,1)]]
+<span class="fragment initial-back" data-fragment-index="12" id="sequence-liftpartial2">lift2List (:) [(20,0),(20,1),(20,2)] [[(50,0)],[(50,1)]]
   = (mapList (:) [(20,0),(20,1),(20,2)]) `bindList` (`mapList` [[(50,0)],[(50,1)]])
   = [(\x -> (20,0):x),(\y -> (20,1):y),(\z -> (20,2):z)] `bindList`
-      (`mapList` [[(50,0)],[(50,1)]])</span><span class="fragment initial-front" data-fragment-index="10" id="sequence-liftpartial">liftList (:) [(50,0),(50,1)] [[]] 
+      (`mapList` [[(50,0)],[(50,1)]])</span><span class="fragment initial-front" data-fragment-index="10" id="sequence-liftpartial">lift2List (:) [(50,0),(50,1)] [[]] 
   = (mapList (:) [(50,0),(50,1)]) `bindList` (`mapList` [[]])
   = [(\x -> (50,0):x), (\y -> (50,1):y)] `bindList` (`mapList` [[]])</span>
 
