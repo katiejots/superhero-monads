@@ -3,7 +3,6 @@ package com.codemiller.superheromonads;
 import org.junit.Test;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import static com.codemiller.superheromonads.List.cons;
 import static com.codemiller.superheromonads.List.itemList;
@@ -76,14 +75,14 @@ public class ListTest {
     }
 
     @Test
-    public void testLift() {
+    public void testLift2() {
         // Given a regular function that takes two arguments, and two lists of those values
         BiFunction<Integer, Integer, Integer> function = (a, b) -> a + b;
         List<Integer> list = itemList(1, 2, 3);
         List<Integer> list2 = itemList(4, 5, 6);
 
-        // When lift is called
-        List<Integer> result = list.lift(function, list2);
+        // When lift2 is called
+        List<Integer> result = list.lift2(function, list2);
 
         // Then the function is lifted into the list context and applied to the arguments
         assert(result.equals(itemList(5, 6, 7, 6, 7, 8, 7, 8, 9)));

@@ -23,7 +23,7 @@ public abstract class Maybe<A> {
 
     public abstract boolean isDefined();
 
-    public abstract <B, C> Maybe<C> lift(BiFunction<A, B, C> func, Maybe<B> maybe);
+    public abstract <B, C> Maybe<C> lift2(BiFunction<A, B, C> func, Maybe<B> maybe);
 
     public static <A> Just<A> just(A value) {
         return new Just<>(value);
@@ -39,7 +39,7 @@ public abstract class Maybe<A> {
     }
 
     public static <A> Maybe<List<A>> sequence(List<Maybe<A>> list) {
-        return list.foldRight((o, a) -> o.lift(List::cons, a), (Maybe<List<A>>) Maybe.<List<A>>just(List.<A>emptyList()));
+        return list.foldRight((o, a) -> o.lift2(List::cons, a), (Maybe<List<A>>) Maybe.<List<A>>just(List.<A>emptyList()));
     }
 
     private static final class Nothing<A> extends Maybe<A> {
@@ -70,7 +70,7 @@ public abstract class Maybe<A> {
         }
 
         @Override
-        public <B, C> Maybe<C> lift(BiFunction<A, B, C> func, Maybe<B> maybe) {
+        public <B, C> Maybe<C> lift2(BiFunction<A, B, C> func, Maybe<B> maybe) {
             return nothing();
         }
 
@@ -125,7 +125,7 @@ public abstract class Maybe<A> {
         }
 
         @Override
-        public <B, C> Maybe<C> lift(BiFunction<A, B, C> func, Maybe<B> maybe) {
+        public <B, C> Maybe<C> lift2(BiFunction<A, B, C> func, Maybe<B> maybe) {
             return this.bind(a -> (Maybe<C>) maybe.bind(b -> just(func.apply(a, b))));
         }
 

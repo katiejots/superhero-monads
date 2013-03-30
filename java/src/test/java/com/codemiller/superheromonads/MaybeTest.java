@@ -48,8 +48,8 @@ public class MaybeTest {
         Maybe<Integer> maybe = just(1);
         Maybe<Integer> maybe2 = just(2);
 
-        // When lift is called
-        Maybe<Integer> result = maybe.lift(function, maybe2);
+        // When lift2 is called
+        Maybe<Integer> result = maybe.lift2(function, maybe2);
 
         // Then the function is lifted into the maybe context and applied to the arguments
         assert (result.equals(just(3)));

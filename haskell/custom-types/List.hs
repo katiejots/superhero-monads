@@ -27,11 +27,11 @@ returnList a = a :| Nil
 applyList :: List (a -> b) -> List a -> List b
 applyList lf la = flatMapList lf (`mapList` la)
 
-liftList :: (a -> b -> c) -> List a -> List b -> List c
-liftList f = applyList . mapList f
+lift2List :: (a -> b -> c) -> List a -> List b -> List c
+lift2List f = applyList . mapList f
 
 sequenceList :: List (List a) -> List (List a) 
-sequenceList = foldRight (liftList (:|)) (returnList Nil)
+sequenceList = foldRight (lift2List (:|)) (returnList Nil)
 
 filterList :: (a -> Bool) -> List a -> List a
 filterList f = foldRight (\x -> if f x then (x :|) else id) Nil

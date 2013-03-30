@@ -13,11 +13,11 @@ bindList l f = foldr (\x acc -> f x ++ acc) [] l
 mapList :: (a -> b) -> [a] -> [b]
 mapList f l = foldr (\x acc -> (f x):acc) [] l
 
-liftList :: (a -> b -> c) -> [a] -> [b] -> [c]
-liftList f la lb = (mapList f la) `bindList` (`mapList` lb)
+lift2List :: (a -> b -> c) -> [a] -> [b] -> [c]
+lift2List f la lb = (mapList f la) `bindList` (`mapList` lb)
 
 sequenceList :: [[a]] -> [[a]]
-sequenceList ls = foldr (\l acc -> liftList (:) l acc) (returnList []) ls
+sequenceList ls = foldr (\l acc -> lift2List (:) l acc) (returnList []) ls
 
 returnListExample = returnList "Bar"
 

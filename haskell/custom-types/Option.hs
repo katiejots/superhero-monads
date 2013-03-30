@@ -21,9 +21,9 @@ returnOption a = Some a
 applyOption :: Option (a -> b) -> Option a -> Option b
 applyOption opf opa = flatMapOption opf (`mapOption` opa) 
 
-liftOption :: (a -> b -> c) -> Option a -> Option b -> Option c
-liftOption f = applyOption . mapOption f
+lift2Option :: (a -> b -> c) -> Option a -> Option b -> Option c
+lift2Option f = applyOption . mapOption f
 
 sequenceOption :: List (Option a) -> Option (List a)
-sequenceOption = foldRight (liftOption (:|)) (returnOption Nil)
+sequenceOption = foldRight (lift2Option (:|)) (returnOption Nil)
 

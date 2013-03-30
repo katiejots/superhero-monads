@@ -23,7 +23,7 @@ public abstract class List<A> {
 
     public abstract List<A> append(List<A> list);
 
-    public abstract <B, C> List<C> lift(BiFunction<A, B, C> function, List<B> list);
+    public abstract <B, C> List<C> lift2(BiFunction<A, B, C> function, List<B> list);
 
     public static <A> EmptyList<A> emptyList() {
         return new EmptyList<>();
@@ -46,7 +46,7 @@ public abstract class List<A> {
     }
 
     public static <A> List<List<A>> sequence(List<List<A>> list) {
-        return list.foldRight((l, a) -> l.lift(List::cons, a), itemList((List<A>) List.<A>emptyList()));
+        return list.foldRight((l, a) -> l.lift2(List::cons, a), itemList((List<A>) List.<A>emptyList()));
     }
 
     private static class EmptyList<A> extends List<A> {
@@ -81,7 +81,7 @@ public abstract class List<A> {
         }
 
         @Override
-        public <B, C> List<C> lift(BiFunction<A, B, C> func, List<B> list) {
+        public <B, C> List<C> lift2(BiFunction<A, B, C> func, List<B> list) {
             return emptyList();
         }
 
@@ -144,7 +144,7 @@ public abstract class List<A> {
         }
 
         @Override
-        public <B, C> List<C> lift(BiFunction<A, B, C> function, List<B> list) {
+        public <B, C> List<C> lift2(BiFunction<A, B, C> function, List<B> list) {
             return this.bind(a -> (List<C>) list.bind(b -> List.itemList(function.apply(a, b))));
         }
 
