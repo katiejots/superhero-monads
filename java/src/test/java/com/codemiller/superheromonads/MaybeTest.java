@@ -42,7 +42,7 @@ public class MaybeTest {
     }
 
     @Test
-    public void testLift() {
+    public void testLift2() {
         // Given a regular function that takes two arguments, and two maybe types containing those type of values
         BiFunction<Integer, Integer, Integer> function = (a, b) -> a + b;
         Maybe<Integer> maybe = just(1);
