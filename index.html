@@ -30,6 +30,10 @@
 		<![endif]-->
 
 		<style>
+			.bracket {color:#CC00FF; font-weight:bold;}
+			.function {color:#FFFF66;}
+			.accumulator {color:#FF9900;}
+			.result {color:#00FFFF;}
 			.initial-hide {opacity:0; visibility:hidden;}
 			.initial-front {position: absolute; z-index: 1;}
 			.initial-back {position: absolute; z-index: 2;}
@@ -141,26 +145,27 @@
 				<section>
 					<h3>Haskell Example</h3>
 					</p>
-					<pre><code>myList = ["a"] --"a":[]
+					<pre><code class="haskell">myList = ["a"] --"a":[]
 
 <span class="fragment">myFunc :: (Num a, Enum a) => [b] -> Int -> [(a,b)]</span>
 <span class="fragment">myFunc (x:xs) n = foldr (\i acc -> (i,x):acc) [] (take n [1..])</span>
 
 <span class="fragment">-- foldr :: (a -> b -> b) -> b -> [a] -> b</span>
 
-<span class="fragment">myFunc myList 3 =
-[1,2,3] (3,"a"):[]</span>
-<span class="fragment">[1,2]   (2,"a"):[(3,"a")]</span>
-<span class="fragment">[1]     (1,"a"):[(2,"a"),(3,"a")]</span>
-<span class="fragment">[]      [(1,"a"),(2,"a"),(3,"a")]</span>
+</code><code class="no-highlight"><span class="fragment">myFunc myList 3 = 1<span class="function">:</span>2<span class="function">:</span>3<span class="function">:</span><span class="accumulator">[]</span></span>
+<span class="fragment">1 <span class="function">(\i acc -> (i,x):acc)</span> 2 <span class="function">(\i acc -> (i,x):acc)</span> 3 <span class="function">(\i acc -> (i,x):acc)</span> <span class="accumulator">[]</span></span>
+<span class="fragment"><span class="bracket">(</span>1 <span class="function">(\i acc -> (i,x):acc)</span> <span class="bracket">(</span>2 <span class="function">(\i acc -> (i,x):acc)</span> <span class="bracket">(</span>3 <span class="function">(\i acc -> (i,x):acc)</span> <span class="accumulator">[]</span><span class="bracket">)))</span></span>
+<span class="fragment"><span class="bracket">(</span>1 <span class="function">(\i acc -> (i,x):acc)</span> <span class="bracket">(</span>2 <span class="function">(\i acc -> (i,x):acc)</span> <span class="result">[(3,"a")]</span><span class="bracket">))</span></span>
+<span class="fragment"><span class="bracket">(</span>1 <span class="function">(\i acc -> (i,x):acc)</span> <span class="result">[(2,"a"),(3,"a")]</span><span class="bracket">)</span></span>
+<span class="fragment"><span class="result">[(1,"a"),(2,"a"),(3,"a")]</span></span>
 
-<span class="fragment">myFunc myList = ?</span>	
+</code><code class="haskell"><span class="fragment">myFunc myList = ?</span>	
 <span class="fragment">myFunc myList :: (Num a, Enum a) => Int -> [(a, Char)]</span></code></pre>
 				</section>
 				<section>
 					<h3>Java 8 Lambdas</h3>
 					</p>
-					<pre><code>public interface Function&lt;T, R&gt; {
+					<pre><code class="java">public interface Function&lt;T, R&gt; {
     public R apply(T t);
 }
 
@@ -245,7 +250,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 					<h3>Maybe/Option Monad</h3>
 					</p>
 					<span>Context of possible value absence</span>
-<pre><code>-- data Maybe a = Just a | Nothing 
+<pre><code class="haskell">-- data Maybe a = Just a | Nothing 
 
 <span class="fragment">returnMaybe :: a -> Maybe a</span>
 <span class="fragment">returnMaybe a = Just a</span>
@@ -269,7 +274,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 				</section>
 				<section>
 					<h3>Maybe in Java 8</h3>
-<pre><code>public abstract class Maybe&lt;A&gt; {
+<pre><code class="java">public abstract class Maybe&lt;A&gt; {
 
     <span class="fragment">public abstract &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func);</span>
 
@@ -289,7 +294,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 </code></pre>
 				</section>
 <section>
-<pre><code>private static final class Nothing&lt;A&gt; extends Maybe&lt;A&gt; {
+<pre><code class="java">private static final class Nothing&lt;A&gt; extends Maybe&lt;A&gt; {
 
     <span class="fragment">@Override
     public &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func) {
@@ -299,7 +304,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 </code></pre>
 				</section>
 				<section>
-<pre><code>private static final class Just&lt;A&gt; extends Maybe&lt;A&gt; {
+<pre><code class="java">private static final class Just&lt;A&gt; extends Maybe&lt;A&gt; {
 
     <span class="fragment">private final A value;
 
@@ -316,7 +321,7 @@ public interface BiFunction&lt;T, U, R&gt; {
 				</section>
 				<section>
 					<h3>Maybe vs Null</h3>
-<pre><code>
+<pre><code class="java">
 public static Maybe&lt;Integer&gt; processIntegerWithMaybe(Maybe&lt;Integer&gt; maybeNum) {
     return <span class="fragment highlight-green">maybeNum.bind(x -> just(x + 1)).bind(y -> just(y * 5))</span>;
 }
@@ -344,7 +349,7 @@ public static Integer multiplyByFive(Integer num) {
 					<h3>List Monad</h3>
 					</p>
 					<span>Context of non-determinism</span>
-<pre><code>-- picture a type declaration something like: data [a] = [] | a:[a]
+<pre><code class="haskell">-- picture a type declaration something like: data [a] = [] | a:[a]
 
 <span class="fragment">returnList :: a -> [a]</span>
 <span class="fragment">returnList a = [a]</span>
@@ -360,7 +365,7 @@ public static Integer multiplyByFive(Integer num) {
 </code></pre>
 				</section>
 				<section>
-<pre><code>public abstract class List&lt;A&gt; {
+<pre><code class="java">public abstract class List&lt;A&gt; {
     <span class="fragment">public abstract &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func);</span>
 
     <span class="fragment">public abstract List&lt;A&gt; append(List&lt;A&gt; list);</span>
@@ -387,7 +392,7 @@ public static Integer multiplyByFive(Integer num) {
 </code></pre>
 				</section>
 				<section>
-<pre><code>private static class EmptyList&lt;A&gt; extends List&lt;A&gt; {
+<pre><code class="java">private static class EmptyList&lt;A&gt; extends List&lt;A&gt; {
 
     <span class="fragment">@Override
     public &lt;B&gt; List&lt;B&gt; bind(Function&lt;A, List&lt;B&gt;&gt; func) {
@@ -397,7 +402,7 @@ public static Integer multiplyByFive(Integer num) {
 </code></pre>
 				</section>
 				<section>
-<pre><code>private static class ItemList&lt;A&gt; extends List&lt;A&gt; {
+<pre><code class="java">private static class ItemList&lt;A&gt; extends List&lt;A&gt; {
 
     <span class="fragment">private final A value;
     private final List&lt;A&gt; next;
@@ -451,7 +456,7 @@ public static Integer multiplyByFive(Integer num) {
 				<section>
 					<h3>Maybe Monad Example Use</h3>
 					</p>
-<pre><code>currencySupply = [(20, 5), (50, 10), (100, 1)]
+<pre><code class="haskell">currencySupply = [(20, 5), (50, 10), (100, 1)]
 
 <span class="fragment">-- lookup :: Eq a => a -> [(a, b)] -> Maybe b</span>
 
@@ -470,7 +475,7 @@ public static Integer multiplyByFive(Integer num) {
 </code></pre>
 				</section>
 				<section>
-<pre><code>// public static &lt;K, V&gt; Maybe&lt;V&gt; lookup(List&lt;Tuple&lt;K, V&gt;&gt; tupleList, K key) { }
+<pre><code class="java">// public static &lt;K, V&gt; Maybe&lt;V&gt; lookup(List&lt;Tuple&lt;K, V&gt;&gt; tupleList, K key) { }
 
 <span class="fragment">public static Maybe&lt;Integer&gt; unitsLeft(List&lt;Tuple&lt;Integer, Integer&gt;&gt; currencySupply,
   Integer value, Integer unitsWanted) {
@@ -482,7 +487,7 @@ public static Integer multiplyByFive(Integer num) {
 				<section>
 					<h3>List Monad Example Use</h3>
 					</p>
-<pre><code>listNotes :: [Int] -> [String] -> [String]
+<pre><code class="haskell">listNotes :: [Int] -> [String] -> [String]
 <span class="fragment">listNotes amts curs = amts `bindList` (\amt -> curs `bindList` (\cur -> 
   returnList (cur ++ (show amt))))</span>
 
@@ -491,7 +496,7 @@ public static Integer multiplyByFive(Integer num) {
 </code></pre>
 				</section>
 				<section>
-<pre><code>public static &lt;String&gt; List&lt;String&gt; listNotes(List&lt;Integer&gt; amts, List&lt;String&gt; currs) {
+<pre><code class="java">public static &lt;String&gt;	 List&lt;String&gt; listNotes(List&lt;Integer&gt; amts, List&lt;String&gt; currs) {
     return amts.bind(amt -&gt; currs.bind(curr -&gt; itemList(curr + amt.toString())));
 }
 </code></pre>
@@ -511,7 +516,7 @@ public static Integer multiplyByFive(Integer num) {
 				</section>
 				<section>
 				<h3>Sequence Maybe Demo</h3>
-<pre><code>currencySupply = [(20, 5), (50, 10), (100, 1)]
+<pre><code class="haskell">currencySupply = [(20, 5), (50, 10), (100, 1)]
 
 checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 <span class="fragment">checkComboServiceable cur combo = sequenceMaybe (foldr (\(val,num) acc -> 
@@ -526,7 +531,7 @@ checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 				</section>
 				<section>
 					<h3>Sequence List Demo</h3>
-<pre><code>createValueUnitPairs :: Int -> Int -> [(Int, Int)]
+<pre><code class="haskell">createValueUnitPairs :: Int -> Int -> [(Int, Int)]
 <span class="fragment">createValueUnitPairs amt val = zip (repeat val) [0..(amt `div` val)]</span>
 
 <span class="fragment">createValueUnitPairs 70 20
@@ -548,7 +553,7 @@ checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 				</section>
 				<section>
 					<h3>Implementing Sequence</h3>
-<pre><code>mapMaybe :: (a -> b) -> Maybe a -> Maybe b
+<pre><code class="haskell">mapMaybe :: (a -> b) -> Maybe a -> Maybe b
 <span class="fragment" data-fragment-index="2">mapMaybe f Nothing = Nothing
 mapMaybe f (Just a) = Just (f a)</span>
 
@@ -566,7 +571,7 @@ mapMaybe f (Just a) = Just (f a)</span>
 </code></pre>
 				</section>
 				<section>
-<pre><code>mapList :: (a -> b) -> [a] -> [b]
+<pre><code class="haskell">mapList :: (a -> b) -> [a] -> [b]
 mapList f l = foldr (\x acc -> (f x):acc) [] l
 
 <span class="fragment" data-fragment-index="1">liftList :: (a -> b -> c) -> [a] -> [b] -> [c]</span>
@@ -597,7 +602,7 @@ mapList f l = foldr (\x acc -> (f x):acc) [] l
 				</section>
 				<section>
 					<h3>Monad Type Class</h3>
-<pre><code>class Monad m where
+<pre><code class="haskell">class Monad m where
   (>>=) :: m a -> (a -> m b) -> m b
   return :: a -> m a
 
