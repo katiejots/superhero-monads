@@ -331,9 +331,7 @@ public static Integer processInteger(Integer num) {
     // Or perhaps throw new IllegalArgumentException("Num cannot be null!");
     Integer incrementedNum = increment(num);
     if (incrementedNum == null) return null;
-    Integer multipliedNum = multiplyByFive(incrementedNum);
-    if (multipliedNum == null) return null;
-    return multipliedNum;
+    return multiplyByFive(incrementedNum);
 }
 
 public static Integer increment(Integer num) {
