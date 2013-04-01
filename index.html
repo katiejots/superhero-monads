@@ -43,7 +43,6 @@
 			#superdef-powers.visible ~ #superdef-points #superdef-powers-point{opacity:1; visibility:visible;}
 			#sequence-liftlist.visible ~ #sequence-liftmaybe{opacity:0; visibility:hidden; display:none;}	
 			#sequence-sequencelist.visible ~ #sequence-sequencemaybe{opacity:0; visibility:hidden; display:none;}	
-			#sequence-liftpartial2.visible ~ #sequence-liftpartial{opacity:0; visibility:hidden;}	
                         @-webkit-keyframes explode { 
 			   0% { opacity: 1; }
                            80% { opacity: 1; -webkit-transform: scale( 4 ); -moz-transform: scale( 4 ); -ms-transform: scale( 4 ); -o-transform: scale( 4 ); transform: scale( 4 ); } 
@@ -586,16 +585,6 @@ mapList f l = foldr (\x acc -> (f x):acc) [] l
 <span class="fragment" data-fragment-index="13">[]                                                      [[(20,0),(50,0)],[(20,0),(50,1)],
                                                          [(20,1),(50,0)],[(20,1),(50,1)],
                                                          [(20,2),(50,0)],[(20,2),(50,1)]]</span>
-
-<span class="fragment initial-back" data-fragment-index="12" id="sequence-liftpartial2">lift2List (:) [(20,0),(20,1),(20,2)] [[(50,0)],[(50,1)]]
-  = (mapList (:) [(20,0),(20,1),(20,2)]) `bindList` (`mapList` [[(50,0)],[(50,1)]])
-  = [(\x -> (20,0):x),(\y -> (20,1):y),(\z -> (20,2):z)] `bindList`
-      (`mapList` [[(50,0)],[(50,1)]])</span><span class="fragment initial-front" data-fragment-index="10" id="sequence-liftpartial">lift2List (:) [(50,0),(50,1)] [[]] 
-  = (mapList (:) [(50,0),(50,1)]) `bindList` (`mapList` [[]])
-  = [(\x -> (50,0):x), (\y -> (50,1):y)] `bindList` (`mapList` [[]])</span>
-
-
-
 </code></pre>
 				</section>
 				<section>
