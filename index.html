@@ -494,7 +494,7 @@ public static Integer multiplyByFive(Integer num) {
 </code></pre>
 				</section>
 				<section>
-<pre><code class="java">public static &lt;String&gt;	 List&lt;String&gt; listNotes(List&lt;Integer&gt; amts, List&lt;String&gt; currs) {
+<pre><code class="java">public static &lt;String&gt; List&lt;String&gt; listNotes(List&lt;Integer&gt; amts, List&lt;String&gt; currs) {
     return amts.bind(amt -&gt; currs.bind(curr -&gt; itemList(curr + amt.toString())));
 }
 </code></pre>
