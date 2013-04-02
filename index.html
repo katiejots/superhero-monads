@@ -600,14 +600,14 @@ mapList f l = foldr (\x acc -> (f x):acc) [] l
   l >>= f = foldr (\x acc -> f x ++ acc) [] l  
   return x = [x]</span>
 
-<span class="fragment">fmap :: Monad m => (a -> b) -> m a -> m b</span>
-<span class="fragment">fmap f ma = ma >>= (\a -> return (f a))</span>
+<span class="fragment">fmap :: Monad m => (a -> b) -> m a -> m b
+fmap f ma = ma >>= (\a -> return (f a))</span>
 
-<span class="fragment">liftM2 :: Monad m => (a -> b -> c) -> m a -> m b -> m c</span>
-<span class="fragment">liftM2 f ma mb = (fmap f ma) >>= (`fmap` mb)</span>
+<span class="fragment">liftM2 :: Monad m => (a -> b -> c) -> m a -> m b -> m c
+liftM2 f ma mb = (fmap f ma) >>= (`fmap` mb)</span>
 
-<span class="fragment">sequence :: Monad m => [m a] -> m [a]</span>
-<span class="fragment">sequence l = foldr (m acc -> liftM2 (:) m acc) (return []) l</span>
+<span class="fragment">sequence :: Monad m => [m a] -> m [a]
+sequence l = foldr (m acc -> liftM2 (:) m acc) (return []) l</span>
 </code></pre>
 				</section>
 				<section>
