@@ -323,7 +323,7 @@ public static Maybe&lt;Integer&gt; processIntegerWithMaybe(Maybe&lt;Integer&gt; 
     return <span class="fragment highlight-green">maybeNum.bind(x -> just(x + 1)).bind(y -> just(y * 5))</span>;
 }
 
-public static Integer processInteger(Integer num) {
+</code><code class="no-highlight"><span class="fragment highlight-red">public static Integer processInteger(Integer num) {
     if (num == null) return null;
     // Or perhaps throw new IllegalArgumentException("Num cannot be null!");
     Integer incrementedNum = increment(num);
@@ -337,7 +337,7 @@ public static Integer increment(Integer num) {
 
 public static Integer multiplyByFive(Integer num) {
     return (num == null) ? null : num * 5;
-}
+}</span>
 </code></pre>
 				</section>
 				<section>
