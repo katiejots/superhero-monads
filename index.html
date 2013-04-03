@@ -37,6 +37,8 @@
 			.initial-hide {opacity:0; visibility:hidden;}
 			.initial-front {position: absolute; z-index: 1;}
 			.initial-back {position: absolute; z-index: 2;}
+                        ul.monad-grid li{list-style:none; width: 33%; text-align:center; font-size:.65em !important; margin:0 !important; height: 6em;padding:0 !important;float:left;line-height:1.2em; }
+                        ul.monad-grid li strong{display:block; padding-top:1em !important; font-size: 1.3em !important; padding-bottom:5px;}
 			#superdef-context.visible ~ #superdef-points #superdef-context-point{opacity:1; visibility:visible;}
 			#superdef-costume.visible ~ #superdef-points #superdef-costume-point{opacity:1; visibility:visible;}
 			#superdef-purpose.visible ~ #superdef-points #superdef-purpose-point{opacity:1; visibility:visible;}
@@ -84,6 +86,40 @@
 			    -o-animation-duration: 1s;
 			    animation-duration: 1s;
                         }
+			@-webkit-keyframes flyin { 
+			   0% { opacity: 0; top: -45px; left: -500px }
+                           100% { opacity: 1; top: -45px; left: 275px } 
+		        }
+                        @-moz-keyframes flyin { 
+			   0% { opacity: 0; top: -45px; left: -500px }
+                           100% { opacity: 1; top: -45px; left: 275px }  
+		        }
+                        @-ms-keyframes flyin { 
+			   0% { opacity: 0; top: -45px; left: -500px }
+                           100% { opacity: 1; top: -45px; left: 275px } 
+		        }
+                        @-o-keyframes flyin { 
+			   0% { opacity: 0; top: -45px; left: -500px }
+                           100% { opacity: 1; top: -45px; left: 275px } 
+		        }
+                        @keyframes flyin { 
+			   0% { opacity: 0; top: -45px; left: -500px }
+                           100% { opacity: 1; top: -45px; left: 275px } 
+		        }
+                        .reveal .slides section .fragment.flyin-fromleft.visible {
+			    -webkit-animation-name: flyin;
+                            -moz-animation-name: flyin;
+                            -ms-animation-name: flyin;
+                            -o-animation-name: flyin;
+                            animation-name: flyin;
+
+			    -webkit-animation-duration: 1s;
+			    -moz-animation-duration: 1s;
+			    -ms-animation-duration: 1s;
+			    -o-animation-duration: 1s;
+			    animation-duration: 1s;
+                        }
+
 	               	      
                 </style>
 	</head>
@@ -435,18 +471,19 @@ public static Integer multiplyByFive(Integer num) {
 					</ul>
 				</section>
 				<section>
-					<span class="fragment" style="position:absolute; top: -50px; left: 500px; z-index: 2; width: 1200px;"><img src="images/monadsilhouette.png" style="background: none; border: none; box-shadow: none;"/></span>
+					<span class="fragment flyin-fromleft" style="position:absolute; top: -45px; left: 275px; z-index: 2; width: 1200px;"><img src="images/monadsilhouette.png" style="background: none; border: none; box-shadow: none;"/></span>
 					<h3>Monadic Heroes</h3>
 					</p>
-					<ul>
-						<li><strong>Identity Monad:</strong> Can blend in anywhere</li>
-						<li><strong>Maybe Monad:</strong> If this hero succeeds, you'll know it</li>
-						<li><strong>List Monad:</strong> Can do many things at once</li>
-						<li><strong>IO Monad:</strong> Puts world manipulators where they belong</li>
-						<li><strong>State Monad:</strong> Always keeps track of the state of affairs</li>
-						<li><strong>Writer Monad:</strong> Never forgets a detail</li>
-						<li><strong>Reader Monad:</strong> Can tell what you're thinking</li>
-						<li><strong>Continuation Monad:</strong> Can travel through time</li>
+					<ul class="monad-grid">
+						<li><strong>Identity Monad</strong> Can blend in anywhere</li>
+						<li><strong>Maybe Monad</strong> If this hero succeeds, <br>you'll know it</li>
+						<li><strong>List Monad</strong> Can do many things at once</li>
+						<li><strong>IO Monad</strong> Puts world manipulators <br>where they belong</li>
+						<li><strong>State Monad</strong> Always keeps track of <br>the state of affairs</li>
+						<li><strong>Writer Monad</strong> Never forgets a detail</li>
+						<li><strong>Reader Monad</strong> Can tell what you're thinking</li>
+						<li><strong>Continuation Monad</strong> Can travel through time</li>
+						<li><strong>Another Monad</strong> Heroic description here</li>
 					</ul>
 				</section>
 				<section>
