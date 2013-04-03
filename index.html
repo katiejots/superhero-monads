@@ -435,17 +435,18 @@ public static Integer multiplyByFive(Integer num) {
 					</ul>
 				</section>
 				<section>
+					<span class="fragment" style="position:absolute; top: -50px; left: 500px; z-index: 2; width: 1200px;"><img src="images/monadsilhouette.png" style="background: none; border: none; box-shadow: none;"/></span>
 					<h3>Monadic Heroes</h3>
 					</p>
 					<ul>
-						<li>Identity Monad: Can blend in anywhere</li>
-						<li>Maybe Monad: If this hero succeeds, you'll know it</li>
-						<li>List Monad: Can do many things at once</li>
-						<li>IO Monad: Puts world manipulators where they belong</li>
-						<li>State Monad: Always keeps track of the state of affairs</li>
-						<li>Writer Monad: Never forgets a detail</li>
-						<li>Reader Monad: Can tell what you're thinking</li>
-						<li>Continuation Monad: Can travel through time</li>
+						<li><strong>Identity Monad:</strong> Can blend in anywhere</li>
+						<li><strong>Maybe Monad:</strong> If this hero succeeds, you'll know it</li>
+						<li><strong>List Monad:</strong> Can do many things at once</li>
+						<li><strong>IO Monad:</strong> Puts world manipulators where they belong</li>
+						<li><strong>State Monad:</strong> Always keeps track of the state of affairs</li>
+						<li><strong>Writer Monad:</strong> Never forgets a detail</li>
+						<li><strong>Reader Monad:</strong> Can tell what you're thinking</li>
+						<li><strong>Continuation Monad:</strong> Can travel through time</li>
 					</ul>
 				</section>
 				<section>
@@ -600,14 +601,14 @@ mapList f l = foldr (\x acc -> (f x):acc) [] l
   l >>= f = foldr (\x acc -> f x ++ acc) [] l  
   return x = [x]</span>
 
-<span class="fragment">fmap :: Monad m => (a -> b) -> m a -> m b</span>
-<span class="fragment">fmap f ma = ma >>= (\a -> return (f a))</span>
+<span class="fragment">fmap :: Monad m => (a -> b) -> m a -> m b
+fmap f ma = ma >>= (\a -> return (f a))</span>
 
-<span class="fragment">liftM2 :: Monad m => (a -> b -> c) -> m a -> m b -> m c</span>
-<span class="fragment">liftM2 f ma mb = (fmap f ma) >>= (`fmap` mb)</span>
+<span class="fragment">liftM2 :: Monad m => (a -> b -> c) -> m a -> m b -> m c
+liftM2 f ma mb = (fmap f ma) >>= (`fmap` mb)</span>
 
-<span class="fragment">sequence :: Monad m => [m a] -> m [a]</span>
-<span class="fragment">sequence l = foldr (m acc -> liftM2 (:) m acc) (return []) l</span>
+<span class="fragment">sequence :: Monad m => [m a] -> m [a]
+sequence l = foldr (m acc -> liftM2 (:) m acc) (return []) l</span>
 </code></pre>
 				</section>
 				<section>
