@@ -570,8 +570,9 @@ checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 <span class="fragment">createValueUnitPairs 70 20
 -- [(20, 0), (20, 1), (20, 2), (20, 3)]</span>
 
-<span class="fragment">combinations amt = sequenceList (foldr (\val acc -> 
-  (createValueUnitPairs amt val):acc) [] (20, 50, 100))</span>
+<span class="fragment">combinations :: Int -> [(Int, Int)]
+combinations amt = sequenceList (foldr (\val acc -> 
+  (createValueUnitPairs amt val):acc) [] [20, 50, 100])</span>
 
 <span class="fragment">combinations 70
 -- [[(20, 0), (50, 0), (100, 0)], 
