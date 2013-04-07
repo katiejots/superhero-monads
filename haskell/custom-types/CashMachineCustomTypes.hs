@@ -52,6 +52,7 @@ findCombos amt vals = filterList valEqAmount combos
               valEqAmount combo = amt == foldRight(\(val,num) acc -> val * num + acc) 0 combo 
 
 -- Function showing the result of just the combinations calculation, before the results are filtered based on value
+combinations :: Int -> List (List (Int,Int))
 combinations amt = sequenceList $ foldRight (\val acc -> (createValueUnitPairs amt val) :| acc) Nil (20 :| 50 :| 100 :| Nil) 
 
 -- Function showing how we could bring it all together, making use of flatMapOption, sequenceList and sequenceOption to find serviceable combinations  

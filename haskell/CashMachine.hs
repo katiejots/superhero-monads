@@ -1,4 +1,4 @@
--- CashMachine example using built-in List and Maybe types
+-- CashMachine example using built-in List and Maybe types (and standard sequence/return/bind)
 
 module CashMachine where
 
@@ -46,6 +46,7 @@ findCombos amt vals = filter valEqAmount combos
               valEqAmount combo = amt == foldr(\(val,num) acc -> val * num + acc) 0 combo 
 
 -- Function showing the result of just the combinations calculation, before the results are filtered based on value
+combinations :: Int -> [[(Int,Int)]]
 combinations amt = sequence (foldr (\val acc -> (createValueUnitPairs amt val) : acc) [] (machineCurrencies currencySupply))
 combinations70 = combinations 70
 
