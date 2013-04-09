@@ -159,7 +159,7 @@
 					<h3>Functional Programming Paradigm</h3>
 					</p>
 					<ul>
-						<li class="fragment">"[I]ts fundamental operation is the application of functions to arguments." - John&nbsp;Hughes</li>
+						"[I]ts fundamental operation is the application of functions to arguments." - John&nbsp;Hughes
 						<li class="fragment">Pure functions don't have side-effects; they are referentially transparent</li>
 						<li class="fragment">Functions are first-class; higher-order functions take other functions as arguments or return a function as a result</li>
 					</ul>
@@ -292,8 +292,8 @@ public interface BiFunction&lt;T, U, R&gt; {
 -- Just 7</span>
 
 <span class="fragment">bindMaybe :: Maybe a -> (a -> Maybe b) -> Maybe b</span>
-<span class="fragment">Nothing `bindMaybe` f = Nothing</span>
-<span class="fragment">Just a `bindMaybe` f = f a</span>
+<span class="fragment">Nothing `bindMaybe` f = Nothing
+Just a `bindMaybe` f = f a</span>
 
 <span class="fragment">Just 7 `bindMaybe` (\x -> returnMaybe (x+1))
 -- Just 8</span>
