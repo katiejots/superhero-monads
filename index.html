@@ -311,12 +311,12 @@ Just a `bindMaybe` f = f a</span>
 
     <span class="fragment">public abstract &lt;B&gt; Maybe&lt;B&gt; bind(Function&lt;A, Maybe&lt;B&gt;&gt; func);</span>
 
-    <span class="fragment">public static &lt;A&gt; Just&lt;A&gt; just(A value) {
-        return new Just&lt;&gt;(value);
-    }</span>
-
     <span class="fragment">public static &lt;A&gt; Nothing&lt;A&gt; nothing() {
         return new Nothing&lt;&gt;();
+    }</span>
+
+    <span class="fragment">public static &lt;A&gt; Just&lt;A&gt; just(A value) {
+        return new Just&lt;&gt;(value);
     }</span>
 
     <span class="fragment">public static &lt;A&gt; Maybe&lt;A&gt; fromNullable(A value) {
@@ -493,8 +493,8 @@ public static Integer multiplyByFive(Integer num) {
 
 <span class="fragment">-- lookup :: Eq a => a -> [(a, b)] -> Maybe b</span>
 
-<span class="fragment">unitsLeft :: [(Int, Int)] -> Int -> Int -> Maybe Int</span>
-<span class="fragment">unitsLeft supply val num = (lookup val supply) `bindMaybe` (\u -> if u - num < 0 
+<span class="fragment">unitsLeft :: [(Int, Int)] -> Int -> Int -> Maybe Int
+unitsLeft supply val num = (lookup val supply) `bindMaybe` (\u -> if u - num < 0 
   then Nothing else returnMaybe (u - num))</span>
 
 <span class="fragment">unitsLeft currencySupply 20 3
@@ -521,8 +521,8 @@ public static Integer multiplyByFive(Integer num) {
 					<h3>List Monad Example Use</h3>
 					</p>
 <pre><code class="haskell">listNotes :: [Int] -> [String] -> [String]
-<span class="fragment">listNotes amts curs = amts `bindList` (\amt -> curs `bindList` (\cur -> 
-  returnList (cur ++ (show amt))))</span>
+listNotes amts curs = amts `bindList` (\amt -> curs `bindList` (\cur -> 
+  returnList (cur ++ (show amt))))
 
 <span class="fragment">listNotes [20, 50, 100] ["$AU", "$NZ"]
 -- ["$AU20","$NZ20","$AU50","$NZ50","$AU100","$NZ100"]</span>	
@@ -552,8 +552,8 @@ public static Integer multiplyByFive(Integer num) {
 <pre><code class="haskell">currencySupply = [(20, 5), (50, 10), (100, 1)]
 
 checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
-<span class="fragment">checkComboServiceable cur combo = sequenceMaybe (foldr (\(val,num) acc -> 
-  (unitsLeft cur val num):acc) [] combo)</span>
+checkComboServiceable cur combo = sequenceMaybe (foldr (\(val,num) acc -> 
+  (unitsLeft cur val num):acc) [] combo)
 
 <span class="fragment">checkComboServiceable currencySupply [(20, 1), (50, 1)]
 -- Just [4,9]</span>
@@ -565,7 +565,7 @@ checkComboServiceable :: [(Int, Int)] -> [(Int, Int)] -> Maybe [Int]
 				<section>
 					<h3>Sequence List Demo</h3>
 <pre><code class="haskell">createValueUnitPairs :: Int -> Int -> [(Int, Int)]
-<span class="fragment">createValueUnitPairs amt val = zip (repeat val) [0..(amt `div` val)]</span>
+createValueUnitPairs amt val = zip (repeat val) [0..(amt `div` val)]
 
 <span class="fragment">createValueUnitPairs 70 20
 -- [(20, 0), (20, 1), (20, 2), (20, 3)]</span>
