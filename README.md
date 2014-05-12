@@ -13,4 +13,4 @@ Monads are sometimes spoken of like villains with an evil plan to turn programme
 
 Slides: http://monads.codemiller.com
 
-
+Video: https://www.youtube.com/watch?v=MlZCiiKGbb0
